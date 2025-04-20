@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Nationality;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -98,6 +99,9 @@ class NationalitiesTableSeeder extends Seeder
             ['name' => 'Yemeni'],
         ];
 
-        DB::table('nationalities')->insert($nationalities);
+
+        foreach ($nationalities as $item) {
+            Nationality::create($item);
+         }
     }
 }

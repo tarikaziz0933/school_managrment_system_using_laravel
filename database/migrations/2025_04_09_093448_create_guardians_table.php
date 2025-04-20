@@ -12,16 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('guardians', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('mobile');
-            $table->string('email');
-            $table->unsignedBigInteger('occupation_id');
+            $table->string('email')->nullable();
+
+            $table->uuid('occupation_id');
             $table->foreign('occupation_id')->references('id')->on('occupations');
-            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+
+            $table->uuid('student_id')->index(); // Changed to match UUID
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+
             $table->timestamps();
             $table->softDeletes();
-            
+
         });
     }
 

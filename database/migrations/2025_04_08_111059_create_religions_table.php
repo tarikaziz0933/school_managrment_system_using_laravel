@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('religions', function (Blueprint $table) {
-            $table->id();
-            $table->string('religion');
+            $table->uuid('id')->primary();
+            $table->string('name')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

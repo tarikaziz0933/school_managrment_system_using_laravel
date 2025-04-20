@@ -18,11 +18,14 @@ class SectionFactory extends Factory
      */
     public function definition(): array
     {
+
+
+
         return [
            'name' => $this->faker->word,
            'gender'=> $this->faker->randomElement(['male', 'female', null]),
-           'campus_id' => Campus::factory(),
-           'class_id'  => StudentClass::factory(),
+           'campus_id' => Campus::inRandomOrder()->value('id'),
+           'class_id'  => StudentClass::inRandomOrder()->value('id'),
         ];
     }
 }

@@ -1,9 +1,7 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\Relation;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RelationSeeder extends Seeder
@@ -15,13 +13,16 @@ class RelationSeeder extends Seeder
     {
         $items = [
 
-            ['name' => 'Father'],
-            ['name' => 'Mother'],
-            ['name' => 'Brother'],
-            ['name' => 'Sister'],
-            ];
-    
-        foreach($items as $item){
+            [
+                'slug' => 'father',
+                'name' => 'Father',
+            ],
+            [
+                'slug' => 'mother',
+                'name' => 'Mother'],
+        ];
+
+        foreach ($items as $item) {
             Relation::create($item);
         }
     }

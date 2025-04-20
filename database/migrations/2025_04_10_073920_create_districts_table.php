@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('birth_places', function (Blueprint $table) {
-            $table->id();
+        Schema::create('districts', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->string('name', 50)->unique();
             $table->timestamps();
             $table->softDeletes();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('birth_places');
+        Schema::dropIfExists('districts');
     }
 };

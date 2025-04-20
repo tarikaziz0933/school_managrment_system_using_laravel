@@ -1,30 +1,93 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\BirthPlace;
 use App\Models\BloodGroup;
 use App\Models\Campus;
+use App\Models\Characteristic;
+use App\Models\District;
 use App\Models\Group;
+use App\Models\Guardian;
+use App\Models\Image;
 use App\Models\Nationality;
 use App\Models\Occupation;
+use App\Models\Relation;
 use App\Models\Religion;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\StudentClass;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Illuminate\Validation\Rule;
+use Mpdf\Mpdf;
 
 class StudentController extends Controller
 {
+
+    private $except_fields = [
+        'student_image',
+        'father_image',
+        'father_name',
+        'father_occupation_id',
+        'father_mobile',
+        'mother_image',
+        'mother_name',
+        'mother_occupation_id',
+        'mother_mobile',
+    ];
+
+    private $validation_rules = [
+        'name'                => 'required|string|max:255',
+        'admitted_at'         => 'required|date',
+        'registration_number' => 'required|integer',
+        'academic_year'       => 'required|string|max:20',
+
+        'campus_id'           => 'required|exists:campuses,id',
+        'class_id'            => 'required|exists:classes,id',
+        'group_id'            => 'required|exists:groups,id',
+        'section_id'          => 'required|exists:sections,id',
+
+        'roll'                => 'required|integer',
+        'gender'              => 'required|in:male,female,other',
+        'id_number'           => 'required|integer|unique:students,id_number',
+        'mobile'              => 'required|string|max:20',
+        'email'               => 'required|email|max:255',
+        'dob'                 => 'required|date',
+
+        'religion_id'         => 'required|exists:religions,id',
+        'prev_school'         => 'required|string|max:255',
+        'present_address'     => 'required|string',
+        'permanent_address'   => 'required|string',
+        'characteristics'     => 'nullable|array',
+
+        'father_name'     => 'required|string|max:255',
+        'father_occupation_id' => 'required|exists:occupations,id',
+        'father_mobile'   => 'required|string|max:20',
+
+
+        'mother_name'     => 'required|string|max:255',
+        'mother_occupation_id' => 'required|exists:occupations,id',
+        'mother_mobile'   => 'required|string|max:20',
+
+        'remarks'             => 'nullable|string',
+        'status'              => 'required|integer|in:0,1',
+        'marks'               => 'required|integer|min:0',
+    ];
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
+        $classes  = StudentClass::pluck('name', 'id');
+
+        $sections  = Section::pluck('name', 'id');
+
         $students = Student::paginate();
 
-        return view('students.index', compact('students'));
+        return view('students.index', compact('students','classes','sections'));
     }
 
     /**
@@ -32,18 +95,21 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $students = Student::all();
-        $campuses = Campus::all();
-        $classes = StudentClass::all();
-        $groups = Group::all();
-        $sections = Section::all();
-        $religions = Religion::all();
-        $bloodGroups = BloodGroup::all();
-        $nationalities = Nationality::all();
-        $occupations = Occupation::all();
-        $birthPlaces = BirthPlace::all();
 
-        return view('students.create', compact('students', 'campuses', 'classes', 'groups', 'sections', 'religions','bloodGroups', 'nationalities', 'occupations', 'birthPlaces'));
+        $campuses        = Campus::pluck('name', 'id');
+        $classes         = StudentClass::pluck('name', 'id');
+        $groups          = Group::pluck('name', 'id');
+        $sections        = Section::pluck('name', 'id');
+        $religions       = Religion::pluck('name', 'id');
+        $bloodGroups     = BloodGroup::pluck('name');
+        $nationalities   = Nationality::pluck('name', 'id');
+        $occupations     = Occupation::pluck('name', 'id');
+        $districts       = District::pluck('name', 'id');
+        $characteristics = Characteristic::pluck('name', 'id');
+
+        $nextRegistrationNumber = Student::max('registration_number') + 1;
+
+        return view('students.create', compact('nextRegistrationNumber', 'campuses', 'classes', 'groups', 'sections', 'religions', 'bloodGroups', 'nationalities', 'occupations', 'districts', 'characteristics'));
 
     }
 
@@ -53,131 +119,116 @@ class StudentController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
+        $request->validate($this->validation_rules);
 
-        // print_r($request);
-        // print_r($request->campus_id);
-        // Validate the incoming data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'admitted_at' => 'required|date',
-            'form_number' => 'nullable|integer',
-            'academic_year' => 'nullable|string|max:20',
-        
-            'campus_id' => 'nullable|exists:campuses,id',
-            'class_id' => 'nullable|exists:classes,id',
-            'group_id' => 'nullable|exists:groups,id',
-            'section_id' => 'nullable|exists:sections,id',
-        
-            'roll' => 'nullable|integer',
-            'gender' => 'required|in:male,female,other',
-            'serial_no' => 'nullable|integer|unique:students,serial_no',
-            'mobile' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'dob' => 'nullable|date',
-        
-            'religion_id' => 'nullable|exists:religions,id',
-            'prev_school' => 'nullable|string|max:255',
-            'present_address' => 'nullable|string',
-            'permanent_address' => 'nullable|string',
-            'characteristics' => 'nullable|array',
-            // 'characteristics.*' => 'string|max:255', // Each item in characteristics array
-        
-            'remarks' => 'nullable|string',
-            'status' => 'required|integer|in:0,1',
-            'marks' => 'nullable|integer|min:0',
-        ]);
 
-        // dd($request->all());
-        $dob = \Carbon\Carbon::parse($request->dob);
-        $age = now()->diff($dob);
+        $student = Student::create($request->except($this->except_fields));
 
-        // Handle file upload if there's an image
-        if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
-        } else {
-            $imageName = null;
+        $student->characteristics()->sync($request->characteristics);
+
+        // Student image
+        if ($request->hasFile('student_image')) {
+            $photoFile = $request->file('student_image');
+            Image::createX($photoFile, 512, $student);
         }
 
-        // Create the student record
-        // Student::create([
-        //     'name' => $request->name,
-        //     // 'image' => $request->image,
-        //     'admitted_at' => $request->admitted_at,
-        //     'form_number' => $request->form_number,
-        //     'year' => $request->year,
-        //     'campus_id' => $request->campus_id,
-        //     'class_id' => $request->class_id,
-        //     'group_id' => $request->group_id,
-        //     'section_id' => $request->section_id,
-        //     'roll' => $request->roll,
-        //     'gender' => $request->gender,
-        //     'serial_no' => $request->serial_no,
-        //     'mobile' => $request->mobile,
-        //     'email' => $request->email,
-        //     'fathers_image' => $request->fathers_image,
-        //     'fathers_name' => $request->fathers_name,
-        //     'fathers_occupation' => $request->fathers_occupation,
-        //     'fathers_contact' => $request->fathers_contact,
-        //     'mothers_image' => $request->mothers_image,
-        //     'mothers_name' => $request->mothers_name,
-        //     'mothers_occupation' => $request->mothers_occupation,
-        //     'mothers_contact' => $request->mothers_contact,
-        //     'dob' => $dob,
-        //     'ageYears' => $age->y,
-        //     'ageMonths' => $age->m,
-        //     'ageDays' => $age->d,
-        //     'religion' => $request->religion,
-        //     'blood_group' => $request->blood_group,
-        //     'nationality' => $request->nationality,
-        //     'birthplace' => $request->birthplace,
-        //     'prev_school' => $request->prev_school,
-        //     'present_address' => $request->present_address,
-        //     'permanent_address' => $request->permanent_address,
-        //     'characteristics' => $request->characteristics,
-        //     'remarks' => $request->remarks,
-        //     'status' => $request->status,
-        //     'marks' => $request->marks,
-        // ]);
+        // Create father
+        $father = Guardian::create([
+            'name'          => $request->father_name,
+            'occupation_id' => $request->father_occupation_id,
+            'mobile'        => $request->father_mobile,
+            'student_id'    => $student->id,
+            'relation_slug' => Relation::FATHER,
+        ]);
 
+        if ($request->hasFile('father_image')) {
+            $photoFile = $request->file('father_image');
+            Image::createX($photoFile, 512, $father);
+        }
 
-        Student::create($request->all());
+        // Create mother
+        $mother = Guardian::create([
+            'name'          => $request->mother_name,
+            'occupation_id' => $request->mother_occupation_id,
+            'mobile'        => $request->mother_mobile,
+            'student_id'    => $student->id,
+            'relation_slug' => Relation::MOTHER,
+        ]);
 
-        return redirect()->route('students.index')->with('success', 'Student added successfully!');
+        if ($request->hasFile('mother_image')) {
+            $photoFile = $request->file('mother_image');
+            Image::createX($photoFile, 512, $mother);
+        }
+
+        return redirect()->route('students.show', $student->id)->with('success', 'Student added successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Student $student)
     {
-        // $student = Student::with(['campus_id', 'class_id', 'group_id', 'section_id', 'religion_id'])->findOrFail($id);
-        $student = Student::all()->findOrFail($id);
+        return view('students.show', compact('student'));
+    }
 
-        $pdf = Pdf::loadView('reports.student_admission', compact('student'));
-        return $pdf->stream('student_admission.pdf'); // or ->download()
+    /**
+     * Display the specified resource.
+     */
+    public function showPdf(Student $student)
+    {
+
+        $student->load([
+            'image',
+            'campus',
+            'studentClass',
+            'group',
+            'section',
+            'father.image',
+            'father.occupation',
+            'father.relation',
+            'mother.image',
+            'mother.occupation',
+            'mother.relation',
+        ]);
+
+
+         // Render Blade view to HTML
+         $html = View::make('students.reports.student_form', compact('student'))->render();
+
+         // Create new mPDF instance
+         $mpdf = new Mpdf();
+
+         // Write HTML to PDF
+         $mpdf->WriteHTML($html);
+
+         // Output to browser (inline view)
+         return response($mpdf->Output('student_admission.pdf', 'I'), 200)
+                 ->header('Content-Type', 'application/pdf');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Student $student)
     {
-        // dd($student->all());
-        
-        $student = Student::all()->findOrFail($id);
-        $campuses = Campus::all();
-        $classes = StudentClass::all();
-        $groups = Group::all();
-        $sections = Section::all();
-        $religions = Religion::all();
-        $bloodGroups = BloodGroup::all();
-        $nationalities = Nationality::all();
-        $occupations = Occupation::all();
-        $birthPlaces = BirthPlace::all();
-       
-        return view('students.edit', compact('student', 'campuses', 'classes', 'groups', 'sections', 'religions','bloodGroups', 'nationalities', 'occupations', 'birthPlaces'));
+        $student->load(['image']);
+        $student->load(['father', 'mother']);
+        $student->load(['father.image', 'mother.image']);
+        $student->load(['father.occupation', 'mother.occupation']);
+        $student->load(['father.relation', 'mother.relation']);
+
+        $campuses        = Campus::pluck('name', 'id');
+        $classes         = StudentClass::pluck('name', 'id');
+        $groups          = Group::pluck('name', 'id');
+        $sections        = Section::pluck('name', 'id');
+        $religions       = Religion::pluck('name', 'id');
+        $bloodGroups     = BloodGroup::pluck('name');
+        $nationalities   = Nationality::pluck('name', 'id');
+        $occupations     = Occupation::pluck('name', 'id');
+        $districts       = District::pluck('name', 'id');
+        $characteristics = Characteristic::pluck('name', 'id');
+
+        return view('students.edit', compact('student', 'campuses', 'classes', 'groups', 'sections', 'religions', 'bloodGroups', 'nationalities', 'occupations', 'districts', 'characteristics'));
     }
 
     /**
@@ -185,7 +236,103 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        $student->update($request->all());
+
+
+        $this->validation_rules['id_number'] = [
+            'required',
+            Rule::unique('students')->where(function ($query) use ( $student, $request) {
+                return $query
+                    ->where('id_number', $request->id_number)
+                    ->where('id_number', '!=', $student->id_number);
+            }),
+        ];
+
+        $this->validation_rules['registration_number'] = [
+            'required',
+            Rule::unique('students')->where(function ($query) use ( $student, $request) {
+                return $query
+                    ->where('registration_number', $request->registration_number)
+                    ->where('registration_number', '!=', $student->registration_number);
+            }),
+        ];
+
+        $request->validate($this->validation_rules);
+
+        $student->update($request->except($this->except_fields));
+
+        $student->characteristics()->sync($request->characteristics);
+
+        if ($request->hasFile('student_image')) {
+            $photoFile = $request->file('student_image');
+
+            if ($student->image == null) {
+                Image::createX($photoFile, 512, $student);
+            } else {
+                $student->image->updateX($photoFile, 512);
+            }
+        }
+
+        $father = $student->father;
+
+        if ($father == null) {
+
+            $father = Guardian::create([
+                'name'          => $request->father_name,
+                'occupation_id' => $request->father_occupation_id,
+                'mobile'        => $request->father_mobile,
+                'student_id'    => $student->id,
+                'relation_slug' => Relation::FATHER,
+            ]);
+
+        } else {
+            $father->update([
+                'name'          => $request->father_name,
+                'occupation_id' => $request->father_occupation_id,
+                'mobile'        => $request->father_mobile,
+            ]);
+        }
+
+        if ($request->hasFile('father_image')) {
+            $photoFile = $request->file('father_image');
+
+            if ($father->image == null) {
+                Image::createX($photoFile, 512, $father);
+            } else {
+                $father->image->updateX($photoFile, 512);
+            }
+        }
+
+        $mother = $student->mother;
+
+        if ($mother == null) {
+
+            $mother = Guardian::create([
+                'name'          => $request->mother_name,
+                'occupation_id' => $request->mother_occupation_id,
+                'mobile'        => $request->mother_mobile,
+                'student_id'    => $student->id,
+                'relation_slug' => Relation::MOTHER,
+            ]);
+
+        } else {
+            $father->update([
+                'name'          => $request->mother_name,
+                'occupation_id' => $request->mother_occupation_id,
+                'mobile'        => $request->mother_mobile,
+            ]);
+        }
+
+        if ($request->hasFile('mother_image')) {
+            $photoFile = $request->file('mother_image');
+
+            if ($mother->image == null) {
+                Image::createX($photoFile, 512, $mother);
+            } else {
+                $mother->image->updateX($photoFile, 512);
+            }
+        }
+
+        return redirect()->route('students.show', $student->id)->with('success', 'Student added successfully!');
     }
 
     /**

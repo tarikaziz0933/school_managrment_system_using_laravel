@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('guardians', function (Blueprint $table) {
-            $table->unsignedBigInteger('relation_id')->nullable()->after('student_id');
+            $table->string('relation_slug')->nullable()->after('student_id');
 
-            $table->foreign('relation_id')->references('id')->on('relations')->onDelete('set null');
+            $table->foreign('relation_slug')->references('slug')->on('relations')->onDelete('set null');
 
             // Make sure student_id column exists before this line
-            $table->unique(['student_id', 'relation_id']);
+            $table->unique(['student_id', 'relation_slug']);
         });
     }
 

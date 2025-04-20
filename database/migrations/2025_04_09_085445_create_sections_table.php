@@ -12,24 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sections', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
-            
+
             $table->string('gender')->nullable();
-                    
-            $table->unsignedBigInteger('campus_id')->nullable();
+
+            $table->uuid('campus_id')->nullable();
             $table->foreign('campus_id')->references('id')->on('campuses');
 
-            $table->unsignedBigInteger('class_id')->nullable();
+            $table->uuid('class_id')->nullable();
             $table->foreign('class_id')->references('id')->on('classes');
 
             $table->integer('status')->default(0);
-            
+
             $table->timestamps();
             $table->softDeletes();
 
-            
-            
+            $table->unique(['name', 'class_id'], 'unique_section_name_class_id');
+            $table->index(['class_id'], 'index_section_class_id');
+
+
         });
     }
 

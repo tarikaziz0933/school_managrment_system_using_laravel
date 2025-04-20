@@ -5,22 +5,22 @@
             <!-- Branch List -->
             <div class="w-full">
                 <div class="bg-white shadow rounded-xl p-6">
-                    <h3 class="text-xl font-semibold mb-4">Birth Place List</h3>
-                    <a href="{{route('birth_place.create')}}">Create</a>
-                    {{ $birthPlaces->links() }}
+                    <h3 class="text-xl font-semibold mb-4">District List</h3>
+                    <a href="{{route('districts.create')}}">Create</a>
+                    {{ $districts->links() }}
                     <table class="w-full min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-100">
                             <tr>
                                 <th class="text-left text-sm font-medium text-gray-700 px-4 py-2">SL</th>
-                                <th class="text-left text-sm font-medium text-gray-700 px-4 py-2">Birth Places</th>
+                                <th class="text-left text-sm font-medium text-gray-700 px-4 py-2">Districts</th>
                                 <th class="text-left text-sm font-medium text-gray-700 px-4 py-2">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($birthPlaces as $key => $birthPlace)
+                            @foreach ($districts as $key => $district)
                                 <tr>
                                     <td class="px-4 py-2 text-sm text-gray-800">{{ $key + 1 }}</td>
-                                    <td class="px-4 py-2 text-sm text-gray-800">{{ $birthPlace->name }}</td>
+                                    <td class="px-4 py-2 text-sm text-gray-800">{{ $district->name }}</td>
                                     <td class="px-4 py-2">
                                         <a href="#" class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
                                             Delete

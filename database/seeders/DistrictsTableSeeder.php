@@ -2,17 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\District;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class BirthPlacesTableSeeder extends Seeder
+class DistrictsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $birthPlaces = [
+        $districts = [
             ['name' => 'Bagerhat'],
             ['name' => 'Bandarban'],
             ['name' => 'Barguna'],
@@ -79,6 +80,9 @@ class BirthPlacesTableSeeder extends Seeder
             ['name' => 'Thakurgaon'],
         ];
 
-        DB::table('birth_places')->insert($birthPlaces);
+
+        foreach ($districts as $item) {
+            District::create($item);
+         }
     }
 }

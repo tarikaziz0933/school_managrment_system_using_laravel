@@ -7,8 +7,8 @@
                     <form action="{{ route('religions.store') }}" method="POST">
                         @csrf
                         <div class="mb-4">
-                            <label for="religion" class="block text-sm font-medium text-gray-700 mb-1">Religion</label>
-                            <input type="text" id="religion" name="religion" class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-400 text-sm">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Religion</label>
+                            <input type="text" id="name" name="name" class="border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-400 text-sm">
                         </div>
                         <div>
                             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md">Add Religion</button>

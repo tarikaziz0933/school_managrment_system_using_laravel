@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BirthPlace;
+use App\Models\Designation;
 use Illuminate\Http\Request;
 
-class BirthPlaceController extends Controller
+class DesignationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $birthPlaces = BirthPlace::paginate();
-        return view('birthPlace.index', compact('birthPlaces'));
+        $designations = Designation::paginate();
+        return view('designations.index', compact('designations'));
     }
 
     /**
@@ -21,7 +21,8 @@ class BirthPlaceController extends Controller
      */
     public function create()
     {
-        return view('birthPlace.create');
+        $designations = Designation::paginate();
+        return view('designations.create', compact('designations'));
     }
 
     /**
@@ -31,18 +32,21 @@ class BirthPlaceController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-        ]);
-        BirthPlace::create([
-            'name' => $request->name,
-        ]);
+            'status' => 'required|integer|in:0,1',
+    ]);
 
-        return redirect()->route('birth_place.index')->with('success', 'Occupation added successfully!');
+    Designation::create([
+        'name' => $request->name,
+        'status' => $request->status,
+    ]);
+
+    return redirect()->route('designations.index')->with('success', 'Class added successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(BirthPlace $birthPlace)
+    public function show(Designation $designation)
     {
         //
     }
@@ -50,7 +54,7 @@ class BirthPlaceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BirthPlace $birthPlace)
+    public function edit(Designation $designation)
     {
         //
     }
@@ -58,7 +62,7 @@ class BirthPlaceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BirthPlace $birthPlace)
+    public function update(Request $request, Designation $designation)
     {
         //
     }
@@ -66,7 +70,7 @@ class BirthPlaceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BirthPlace $birthPlace)
+    public function destroy(Designation $designation)
     {
         //
     }

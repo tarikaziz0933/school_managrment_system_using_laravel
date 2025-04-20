@@ -13,9 +13,21 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
+
+
+        <div >
+            <!-- Image (Make it span full width) -->
+            <img id="pic1" class="w-48 h-48 object-cover rounded-lg border"
+                src="{{ $user?->image?->url ?? asset('images/blank-profile-pic.png') }}"
+                 />
+
+            <input type="file" name="image" id="image" oninput="updateImage(this, 'pic1')"
+                class="mt-1 w-full text-lg focus:ring focus:ring-blue-200 px-3 py-2" />
+
+        </div>
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -61,4 +73,12 @@
             @endif
         </div>
     </form>
+
+    <script>
+        function updateImage(input, picId) {
+            const pic = document.getElementById(picId);
+            pic.src = window.URL.createObjectURL(input.files[0]);
+        }
+    </script>
+
 </section>

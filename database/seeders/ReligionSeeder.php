@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Relation;
+use App\Models\Religion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
@@ -13,15 +15,18 @@ class ReligionSeeder extends Seeder
     public function run(): void
     {
         $religions = [
-            ['religion' => 'Islam'],
-            ['religion' => 'Christianity'],
-            ['religion' => 'Hinduism'],
-            ['religion' => 'Buddhism'],
-            ['religion' => 'Judaism'],
-            ['religion' => 'Atheism'],
-            ['religion' => 'Other'],
+            ['name' => 'Islam'],
+            ['name' => 'Christianity'],
+            ['name' => 'Hinduism'],
+            ['name' => 'Buddhism'],
+            ['name' => 'Judaism'],
+            ['name' => 'Other'],
         ];
 
-        DB::table('religions')->insert($religions);
+
+        foreach ($religions as $religion) {
+           Religion::create($religion);
+        }
+
     }
 }

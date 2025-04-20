@@ -12,33 +12,34 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->integer('id_number')->unique();
             $table->string('name');
             $table->dateTime('admitted_at');
-            $table->integer('form_number')->nullable();
+            $table->integer('registration_number')->nullable();
             $table->string('academic_year')->nullable();
-        
-            $table->unsignedBigInteger('campus_id')->nullable();
+
+            $table->uuid('campus_id')->nullable();
             $table->foreign('campus_id')->references('id')->on('campuses');
 
-            $table->unsignedBigInteger('class_id')->nullable();
+            $table->uuid('class_id')->nullable();
             $table->foreign('class_id')->references('id')->on('classes');
 
-            $table->unsignedBigInteger('group_id')->nullable();
+            $table->uuid('group_id')->nullable();
             $table->foreign('group_id')->references('id')->on('groups');
-            
-            $table->unsignedBigInteger('section_id')->nullable();
+
+            $table->uuid('section_id')->nullable();
             $table->foreign('section_id')->references('id')->on('sections');
-        
+
             $table->integer('roll')->nullable();
             $table->string('gender'); // Updated here
-            $table->integer('serial_no')->nullable();
+
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
             $table->date('dob')->nullable();
-            
-        
-            $table->unsignedBigInteger('religion_id')->nullable();
+
+
+            $table->uuid('religion_id')->nullable();
             $table->foreign('religion_id')->references('id')->on('religions');
 
             $table->string('prev_school')->nullable();
@@ -52,7 +53,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        
+
     }
 
     /**

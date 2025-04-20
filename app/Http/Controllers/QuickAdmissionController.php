@@ -24,21 +24,21 @@ class QuickAdmissionController extends Controller
     }
 
     public function store(Request $request){
-        
+
         $request->validate([
             'admitted_at' => 'required|date',
-            'form_number' => 'nullable|integer',
+            'registration_number' => 'required|integer',
             'campus_id' => 'required|exists:campuses,id',
             'class_id' => 'required|exists:classes,id',
             'group_id' => 'required|exists:groups,id',
             'section_id' => 'required|exists:sections,id',
-            'academic_year' => 'nullable|string|max:20',
-            'serial_no' => 'required|integer|unique:students,serial_no',
+            'academic_year' => 'required|string|max:20',
+            'id_number' => 'required|integer|unique:students,id_number',
             'name' => 'required|string|max:255',
             'roll' => 'required|integer|between:0,50',
             'gender' => 'required|in:male,female,other',
             'status' => 'required|in:0,1', // 0 for inactive, 1 for active
-            'mobile' => 'nullable|string|max:20',
+            'mobile' => 'required|string|max:20',
         ]);
         // dd($request->all());
 

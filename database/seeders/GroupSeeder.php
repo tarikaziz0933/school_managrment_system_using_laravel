@@ -13,6 +13,17 @@ class GroupSeeder extends Seeder
      */
     public function run(): void
     {
-        Group::factory(10)->create();
+        // Group::factory(10)->create();
+
+        $groups = [
+            ['name' => 'Science'],
+            ['name' => 'Arts'],
+            ['name' => 'Commerce'],
+        ];
+        foreach ($groups as $group) {
+            Group::create($group);
+        }
+
+
     }
 }

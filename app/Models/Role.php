@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\AutoUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laratrust\Models\Role as RoleModel;
 
 class Role extends RoleModel
 {
     use HasFactory;
+    use AutoUuid;
 
     protected $fillable = ['name'];
 

@@ -31,10 +31,10 @@ class ReligionController extends Controller
     public function store(Request $request)
     {
         $request ->validate([
-            'religion' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
         Religion::create([
-            'religion' => $request->religion,
+            'name' => $request->name,
         ]);
         return redirect()->route('religions.index')->with('success', 'Religion added successfully!');
     }

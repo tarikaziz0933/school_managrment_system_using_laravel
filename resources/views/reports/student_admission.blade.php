@@ -30,15 +30,15 @@
             <td><strong>Email:</strong> {{ $student->email }}</td>
         </tr>
         <tr>
-            <td><strong>Class:</strong> {{ $student->rel_to_class->name ?? 'N/A' }}</td>
-            <td><strong>Section:</strong> {{ $student->rel_to_section->name ?? 'N/A' }}</td>
+            <td><strong>Class:</strong> {{ $student->studentClass->name ?? 'N/A' }}</td>
+            <td><strong>Section:</strong> {{ $student->section->name ?? 'N/A' }}</td>
         </tr>
         <tr>
-            <td><strong>Group:</strong> {{ $student->rel_to_group->name ?? 'N/A' }}</td>
-            <td><strong>Campus:</strong> {{ $student->rel_to_campus->name ?? 'N/A' }}</td>
+            <td><strong>Group:</strong> {{ $student->group->name ?? 'N/A' }}</td>
+            <td><strong>Campus:</strong> {{ $student->campus->name ?? 'N/A' }}</td>
         </tr>
         <tr>
-            <td><strong>Religion:</strong> {{ $student->rel_to_religion->name ?? 'N/A' }}</td>
+            <td><strong>Religion:</strong> {{ $student->religion->name ?? 'N/A' }}</td>
             <td><strong>Academic Year:</strong> {{ $student->academic_year }}</td>
         </tr>
         <tr>

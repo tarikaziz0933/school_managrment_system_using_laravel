@@ -13,6 +13,27 @@ class ClassSeeder extends Seeder
      */
     public function run(): void
     {
-        StudentClass::factory(5)->create();
+        // StudentClass::factory(5)->create();
+
+        $classes = [
+            ['name' => 'Play'],
+            ['name' => 'Nursery'],
+            ['name' => 'KG'],
+            ['name' => 'One'],
+            ['name' => 'Two'],
+            ['name' => 'Three'],
+            ['name' => 'Fouth'],
+            ['name' => 'Five'],
+            ['name' => 'Six'],
+            ['name' => 'Seven'],
+            ['name' => 'Eight'],
+            ['name' => 'Nine'],
+
+        ];
+
+        foreach ($classes as $class) {
+            StudentClass::create($class);
+        }
+
     }
 }

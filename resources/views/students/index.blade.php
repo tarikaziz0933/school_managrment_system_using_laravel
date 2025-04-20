@@ -1,98 +1,172 @@
 <x-app-layout>
     <div class="mx-auto px-4 py-6">
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
-            <div class="bg-gray-100 p-4">
-                <h3 class="text-2xl font-semibold text-gray-700">Student List</h3>
-            </div>
-            <div class="p-4">
 
+            <div class="bg-gray-100 p-4 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-semibold text-gray-700">Students</h3>
+
+                    {{-- Create Button --}}
+                    <a href="{{ route('students.create') }}"
+                        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+                        Create
+                    </a>
+                </div>
+
+                {{-- Search Form --}}
+                <form method="GET" action="{{ route('users.index') }}"
+                    class="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search by name or email"
+                        class="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200 focus:outline-none">
+
+                    <!-- Class -->
+                    <div>
+
+                        <select name="class_id" id="class_id"
+                            class="mt-1  w-full  text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2">
+
+                            @foreach ($classes as $id => $name)
+                                <option value="{{ $id }}"
+                                    {{ old('class_id') == $id ? 'selected' : '' }}>
+                                    {{ $name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('class_id')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+
+                    </div>
+
+                    <div>
+
+                        <select name="section_id" id="section_id"
+                            class="mt-1  w-full  text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2">
+
+                            @foreach ($sections as $id => $name)
+                                <option value="{{ $id }}" {{ old('section_id') == $id ? 'selected' : '' }}>
+                                    {{ $name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('section_id')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button type="submit"
+                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                        </svg>
+                    </button>
+
+                </form>
+            </div>
+
+            <div class="p-4 space-y-6">
                 {{ $students->links() }}
-                
-                <table class="min-w-full table-auto mt-3 mb-6">
-                    <thead>
-                        <tr class="bg-gray-200 text-sm text-gray-600">
-                            <th class="px-4 py-2">Action</th>
-                                <th class="px-4 py-2">SL</th>
-                                <th class="px-4 py-2">Name</th>
-                                <th class="px-4 py-2">Admitted At</th>
-                                <th class="px-4 py-2">Form No</th>
-                                <th class="px-4 py-2">Academic Year</th>
-                                <th class="px-4 py-2">Campus</th>
-                                <th class="px-4 py-2">Class</th>
-                                <th class="px-4 py-2">Group</th>
-                                <th class="px-4 py-2">Section</th>
-                                <th class="px-4 py-2">Roll</th>
-                                <th class="px-4 py-2">Gender</th>
-                                <th class="px-4 py-2">Serial No</th>
-                                <th class="px-4 py-2">Mobile</th>
-                                <th class="px-4 py-2">Email</th>
-                                <th class="px-4 py-2">DOB</th>
-                                <th class="px-4 py-2">Religion</th>
-                                <th class="px-4 py-2">Blood Group</th>
-                                <th class="px-4 py-2">Nationality</th>
-                                <th class="px-4 py-2">Birth Place</th>
-                                <th class="px-4 py-2">Prev School</th>
-                                <th class="px-4 py-2">Present Address</th>
-                                <th class="px-4 py-2">Permanent Address</th>
-                                <th class="px-4 py-2">Remarks</th>
-                                <th class="px-4 py-2">Status</th>
-                                <th class="px-4 py-2">Marks</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($students as $key => $student)
-                            <tr class="border-b text-sm">
-                                <td class="px-4 py-2">
-                                    <div class="flex flex-col space-y-1">
-                                        <a href="{{ route('students.show', $student->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition" target="_blank">
-                                            Show
-                                        </a>
-                                        {{-- <a href="{{ route('students.show', $student->id) }}" 
-                                           class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">
-                                            Show
-                                        </a> --}}
-                                        <a href="{{ route('students.edit', $student->id) }}" 
-                                           class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
-                                            Edit
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-2">{{ $students->firstItem() + $key }}</td>
-                                <td class="px-4 py-2">{{ $student->name }}</td>
-                                <td class="px-4 py-2">{{ $student->admitted_at }}</td>
-                                <td class="px-4 py-2">{{ $student->form_number }}</td>
-                                <td class="px-4 py-2">{{ $student->academic_year }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_campus?->name }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_class?->name }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_group?->name }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_section?->name }}</td>
-                                <td class="px-4 py-2">{{ $student->roll }}</td>
-                                <td class="px-4 py-2">{{ ucfirst($student->gender) }}</td>
-                                <td class="px-4 py-2">{{ $student->serial_no }}</td>
-                                <td class="px-4 py-2">{{ $student->mobile }}</td>
-                                <td class="px-4 py-2">{{ $student->email }}</td>
-                                <td class="px-4 py-2">{{ $student->dob }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_religion?->religion }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_bloodGroup?->name }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_nationality?->name }}</td>
-                                <td class="px-4 py-2">{{ $student->rel_to_birthPlace?->name }}</td>
-                                <td class="px-4 py-2">{{ $student->prev_school }}</td>
-                                <td class="px-4 py-2">{{ $student->present_address }}</td>
-                                <td class="px-4 py-2">{{ $student->permanent_address }}</td>
-                                <td class="px-4 py-2">{{ $student->remarks }}</td>
-                                <td class="px-4 py-2">
+
+                @foreach ($students as $student)
+                    <div class="flex items-start gap-4 bg-white border rounded-lg shadow p-4">
+                        {{-- Photo (Left Side) --}}
+                        <div class="w-32 h-32 flex-shrink-0">
+                            <img src="{{ $student->image?->url ?? asset('images/blank-profile-pic.png') }}"
+                                alt="{{ $student->name }}" class="w-full h-full object-cover rounded-lg border">
+                        </div>
+
+                        {{-- Info (Right Side) --}}
+                        <div class="flex-1 space-y-4 text-sm">
+                            {{-- Primary Info --}}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2">
+                                <div><strong>ID:</strong> {{ $student->id_number }}</div>
+                                <div><strong>Name:</strong> {{ $student->name }}</div>
+                                <div><strong>Form No:</strong> {{ $student->registration_number }}</div>
+                                <div><strong>Admitted:</strong> {{ $student->admitted_at->format('d/m/Y') }}</div>
+                                <div><strong>Academic Year:</strong> {{ $student->academic_year }}</div>
+                                <div><strong>Campus:</strong> {{ $student->campus?->name }}</div>
+                                <div><strong>Class:</strong> {{ $student->studentClass?->name }}</div>
+                                <div><strong>Group:</strong> {{ $student->group?->name }}</div>
+                                <div><strong>Section:</strong> {{ $student->section?->name }}</div>
+                                <div><strong>Roll:</strong> {{ $student->roll }}</div>
+                                <div><strong>Gender:</strong> {{ ucfirst($student->gender) }}</div>
+                                <div><strong>Mobile:</strong> {{ $student->mobile }}</div>
+                                <div><strong>Email:</strong> {{ $student->email }}</div>
+                                <div><strong>DOB:</strong> {{ $student->dob?->format('d/m/Y') }}</div>
+                                <div><strong>Status:</strong>
                                     @if ($student->status === 1)
                                         <span class="text-green-600 font-semibold">Active</span>
                                     @else
                                         <span class="text-red-600 font-semibold">Inactive</span>
                                     @endif
-                                </td>
-                                <td class="px-4 py-2">{{ $student->marks }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </div>
+                                {{-- <div><strong>Marks:</strong> {{ $student->marks }}</div> --}}
+                            </div>
+
+                            {{-- Additional Info --}}
+                            {{-- <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 border-t pt-4">
+                                <div><strong>Religion:</strong> {{ $student->religion?->name }}</div>
+                                <div><strong>Blood Group:</strong> {{ $student->bloodGroup?->name }}</div>
+                                <div><strong>Nationality:</strong> {{ $student->nationality?->name }}</div>
+                                <div><strong>Birth Place:</strong> {{ $student->district?->name }}</div>
+                                <div><strong>Previous School:</strong> {{ $student->prev_school }}</div>
+                                <div><strong>Present Address:</strong> {{ $student->present_address }}</div>
+                                <div><strong>Permanent Address:</strong> {{ $student->permanent_address }}</div>
+                                <div class="md:col-span-3">
+                                    <strong>Characteristics:</strong>
+                                    @foreach ($student->characteristics as $char)
+                                        <span
+                                            class="inline-block bg-gray-200 text-gray-700 text-sm px-2 py-1 rounded mr-1 mb-1">
+                                            {{ $char->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                                <div class="col-span-full"><strong>Remarks:</strong> {{ $student->remarks }}</div>
+                            </div> --}}
+
+                            {{-- Action Buttons --}}
+                            {{-- <div class="pt-3 flex gap-2">
+                                <a href="{{ route('students.show', $student->id) }}"
+                                    class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">Show</a>
+                                <a href="{{ route('students.edit', $student->id) }}"
+                                    class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">Edit</a>
+
+
+                                <a href="{{ route('students.report', $student->id) }}" target="_blank"
+                                    class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 transition">
+                                    PDF
+                                </a>
+
+                            </div> --}}
+                        </div>
+
+                          {{-- Action (right Side) --}}
+                          <div class="flex-shrink-0 flex flex-col space-y-2">
+
+                            <a href="{{ route('students.show', $student->id) }}"
+                                class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">
+                                Show
+                            </a>
+
+                            <a href="{{ route('students.edit', $student->id) }}"
+                                class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">
+                                Edit
+                            </a>
+
+                            <a href="{{ route('students.report', $student->id) }}" target="_blank"
+                                class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 transition">
+                                PDF
+                            </a>
+
+                        </div>
+
+                    </div>
+                @endforeach
 
                 {{ $students->links() }}
             </div>

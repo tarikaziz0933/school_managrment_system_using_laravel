@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Occupation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -64,6 +65,9 @@ class OccupationsTableSeeder extends Seeder
             ['name' => 'Other'],
         ];
 
-        DB::table('occupations')->insert($occupations);
+
+        foreach ($occupations as $item) {
+            Occupation::create($item);
+         }
     }
 }

@@ -19,7 +19,7 @@
                             @foreach ($religions as $key => $religion)
                                 <tr>
                                     <td class="px-4 py-2 text-gray-800">{{ $key + 1 }}</td>
-                                    <td class="px-4 py-2 text-gray-800">{{ $religion->religion }}</td>
+                                    <td class="px-4 py-2 text-gray-800">{{ $religion->name }}</td>
                                     <td class="px-4 py-2">
                                         <a href="#" class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
                                             Delete
