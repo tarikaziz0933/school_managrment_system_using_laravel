@@ -30,7 +30,7 @@
             <td><strong>Email:</strong> {{ $student->email }}</td>
         </tr>
         <tr>
-            <td><strong>Class:</strong> {{ $student->studentClass->name ?? 'N/A' }}</td>
+            <td><strong>Class:</strong> {{ $student->SchoolClass->name ?? 'N/A' }}</td>
             <td><strong>Section:</strong> {{ $student->section->name ?? 'N/A' }}</td>
         </tr>
         <tr>
@@ -39,7 +39,7 @@
         </tr>
         <tr>
             <td><strong>Religion:</strong> {{ $student->religion->name ?? 'N/A' }}</td>
-            <td><strong>Academic Year:</strong> {{ $student->academic_year }}</td>
+            <td><strong>Academic Year:</strong> {{ $student->year }}</td>
         </tr>
         <tr>
             <td><strong>Present Address:</strong> {{ $student->present_address }}</td>

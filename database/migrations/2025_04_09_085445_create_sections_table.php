@@ -23,7 +23,11 @@ return new class extends Migration
             $table->uuid('class_id')->nullable();
             $table->foreign('class_id')->references('id')->on('classes');
 
-            $table->integer('status')->default(0);
+            $table->integer('total_boys')->nullable()->default(0);
+            $table->integer('total_girls')->nullable()->default(0);
+
+
+            $table->integer('status')->default();
 
             $table->timestamps();
             $table->softDeletes();

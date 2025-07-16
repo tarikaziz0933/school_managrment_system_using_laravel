@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
+    <div class="flex h-screen " :class="{ 'overflow-hidden': isSideMenuOpen }">
         <!-- Desktop sidebar -->
         <aside class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
             <div class="py-4 text-gray-500 dark:text-gray-400">
@@ -45,24 +45,27 @@
 
                         <!-- Add this classes to an active anchor (a tag) -->
                         <!-- text-gray-800 dark:text-gray-100 -->
-                        <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="{{ url('/dashboard') }}">
-                            <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                <path
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                                </path>
-                            </svg>
-                            <span class="ml-4">Dashboard</span>
-                        </a>
+                        <div
+                            class="inline-flex items-center w-full px-3 py-2 text-sm font-semibold text-white bg-orange-400 rounded shadow-inner">
+                            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                                href="{{ url('/dashboard') }}">
+                                <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                    </path>
+                                </svg>
+                                <span class="ml-4">Dashboard</span>
+                            </a>
+                        </div>
                     </li>
                 </ul>
-                <ul>
 
-                  {{-- Employee Section --}}
+                <ul>
+                    {{-- Student Section --}}
                     <li class="relative px-6 py-3">
                         <div
-                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                            class="inline-flex items-center w-full px-3 py-2 text-sm font-semibold text-white bg-orange-400 rounded shadow-inner">
                             <span class="inline-flex items-center">
                                 {{-- <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path
@@ -74,134 +77,101 @@
                         </div>
 
                         <!-- Submenu always shown -->
-                        <ul
-                            class="p-2 mt-2 space-y-2 text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                        <ul class="p-2 mt-2 space-y-2 text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                             aria-label="submenu">
-                            <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                <a class="w-full" href="{{ route('quickaddmission.create') }}">Quick Addmission</a>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('quickaddmissions.create') }}">Quick Admission</a>
                             </li>
-                            <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                <a class="w-full" href="{{ route('students.create') }}">Student Addmission</a>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('students.create') }}">Admission</a>
                             </li>
-                            <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('re-admissions.index') }}"> Readmission</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
                                 <a class="w-full" href="{{ route('students.index') }}">Student List</a>
                             </li>
                         </ul>
                     </li>
 
-                    {{-- Teacher Section --}}
+                    {{-- Employee Section --}}
                     <li class="relative px-6 py-3">
-                      <div
-                          class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                          <span class="inline-flex items-center">
-                              {{-- <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <div
+                            class="inline-flex items-center w-full px-3 py-2 text-sm font-semibold text-white bg-orange-400 rounded shadow-inner">
+                            <span class="inline-flex items-center">
+                                {{-- <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                   <path
                                       d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
                                   </path>
                               </svg> --}}
-                              <span class="ml-2">Employees</span>
-                          </span>
-                      </div>
-
-                      <!-- Submenu always shown -->
-                      <ul
-                          class="p-2 mt-2 space-y-2 text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
-                          aria-label="submenu">
-                          <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                              <a class="w-full" href="{{ route('employees.create') }}">Employee Create</a>
-                          </li>
-                          <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                              <a class="w-full" href="{{ route('employees.index') }}">Employee List</a>
-                          </li>
-                          {{-- <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                              <a class="w-full" href="{{ route('students.index') }}">Student List</a>
-                          </li> --}}
-                      </ul>
-                  </li>
-
-
-                    <li class="relative px-6 py-3">
-                        <button
-                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            @click="toggleBranchMenu" aria-haspopup="true">
-                            <span class="inline-flex items-center">
-                                <span class="ml-4">Setups</span>
+                                <span class="ml-2">Employees</span>
                             </span>
-                            <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
-                        <template x-if="isBranchMenuOpen">
-                            <ul x-transition:enter="transition-all ease-in-out duration-300"
-                                x-transition:enter-start="opacity-25 max-h-0"
-                                x-transition:enter-end="opacity-100 max-h-xl"
-                                x-transition:leave="transition-all ease-in-out duration-300"
-                                x-transition:leave-start="opacity-100 max-h-xl"
-                                x-transition:leave-end="opacity-0 max-h-0"
-                                class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
-                                aria-label="submenu">
+                        </div>
 
+                        <!-- Submenu always shown -->
+                        <ul class="p-2 mt-2 space-y-2 text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                            aria-label="submenu">
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('employees.create') }}">Create</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('employees.index') }}">Employee List</a>
+                            </li>
+                        </ul>
+                    </li>
 
-                                <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('users.index') }}">Users</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('designations.index') }}">Designations</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('classes.index') }}">Classes</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('groups.index') }}">Groups</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('campuses.index') }}">Campus</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('sections.index') }}">Sections</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('religions.index') }}">Religion</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('blood_groups.index') }}">Blood Group</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('nationalities.index') }}">Nationality</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('occupations.index') }}">Occupation</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('districts.index') }}">Districts</a>
-                                </li>
-                                <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="{{ route('relations.index') }}">Relations</a>
-                                </li>
-                            </ul>
-                        </template>
+                    {{-- Accounts Section --}}
+                    <li class="relative px-6 py-3">
+                        <div
+                            class="inline-flex items-center w-full px-3 py-2 text-sm font-semibold text-white bg-orange-400 rounded shadow-inner">
+                            <span class="inline-flex items-center">
+                                {{-- <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
+                                    </path>
+                                </svg> --}}
+                                <span class="ml-2">Accounts Collection</span>
+                            </span>
+                        </div>
+
+                        <!-- Submenu always shown -->
+                        <ul class="p-2 mt-2 space-y-2 text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                            aria-label="submenu">
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('fee-collections.create') }}">Fees Collection</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('dues-collections.index') }}">Dues Collection</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('approved-collections.index') }}">Approved
+                                    Collection</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('scholarships.index') }}">Scholarship</a>
+                            </li>
+
+                        </ul>
                     </li>
 
 
+                    {{-- Securitiy Section --}}
                     <li class="relative px-6 py-3">
                         <button
-                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            class="inline-flex items-center w-full px-3 py-2 text-sm font-semibold text-white bg-orange-400 rounded shadow-inner justify-between transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                             @click="toggleRoleMenu" aria-haspopup="true">
                             <span class="inline-flex items-center">
-                                <span class="ml-4">Roles and Permissions</span>
+                                <span class="ml-4"> Security </span>
                             </span>
                             <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -220,6 +190,20 @@
                                 aria-label="submenu">
                                 <li
                                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('users.index') }}">Users</a>
+                                </li>
+
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('roles.index') }}">Roles</a>
+                                </li>
+
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('permissions.index') }}">Permissions</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
                                     <a class="w-full" href="{{ route('roles.permissions') }}">Role Management</a>
                                 </li>
                                 <li
@@ -229,14 +213,162 @@
                             </ul>
                         </template>
                     </li>
+
+
+                    {{-- Setup Section --}}
+                    <li class="relative px-6 py-3">
+                        <button
+                            class="inline-flex items-center w-full px-3 py-2 text-sm font-semibold text-white bg-orange-400 rounded shadow-inner justify-between transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            @click="toggleBranchMenu" aria-haspopup="true">
+                            <span class="inline-flex items-center">
+                                <span class="ml-4">Setups</span>
+                            </span>
+                            <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        {{-- <template x-if="isBranchMenuOpen"> --}}
+                        <ul x-transition:enter="transition-all ease-in-out duration-300"
+                            x-transition:enter-start="opacity-25 max-h-0"
+                            x-transition:enter-end="opacity-100 max-h-xl"
+                            x-transition:leave="transition-all ease-in-out duration-300"
+                            x-transition:leave-start="opacity-100 max-h-xl" x-transition:leave-end="opacity-0 max-h-0"
+                            class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                            aria-label="submenu">
+
+
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('users.index') }}">Users</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('notices.index') }}">Notices</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('designations.index') }}">Designations</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('employment-type.index') }}">Employment Type</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('exams.index') }}">Exam Names</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('education_boards.index') }}">Board Names</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('classes.index') }}">Classes</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('groups.index') }}">Groups/Subjects</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('campuses.index') }}">Campus</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('sections.index') }}">Sections</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('religions.index') }}">Religion</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('blood_groups.index') }}">Blood Group</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('nationalities.index') }}">Nationality</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('occupations.index') }}">Occupation</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('districts.index') }}">Districts</a>
+                            </li>
+
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('police-stations.index') }}">Thanas</a>
+                            </li>
+
+                        </ul>
+                        {{-- </template> --}}
+                    </li>
+
+
+                    {{-- Accounts Setups --}}
+                    <li class="relative px-6 py-3">
+                        <button
+                            class="inline-flex items-center w-full px-3 py-2 text-sm font-semibold text-white bg-orange-400 rounded shadow-inner justify-between transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            @click="toggleRoleMenu" aria-haspopup="true">
+                            <span class="inline-flex items-center">
+                                <span class="ml-4"> Accunts Setups </span>
+                            </span>
+                            <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        {{-- <template x-if="isRoleMenuOpen"> --}}
+                        <ul x-transition:enter="transition-all ease-in-out duration-300"
+                            x-transition:enter-start="opacity-25 max-h-0"
+                            x-transition:enter-end="opacity-100 max-h-xl"
+                            x-transition:leave="transition-all ease-in-out duration-300"
+                            x-transition:leave-start="opacity-100 max-h-xl" x-transition:leave-end="opacity-0 max-h-0"
+                            class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                            aria-label="submenu">
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('fee-types.index') }}">Fee Types</a>
+                            </li>
+                            <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('fee-setup-masters.index') }}">Fee Setup </a>
+                                </li>
+
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('root-divides.index') }}">Root Divide</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('students-transport-assigns.index') }}">Transport
+                                    Assign</a>
+                            </li>
+
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('payment-frequency-types.index') }}">Payment Frequency
+                                    Setup</a>
+                            </li>
+
+                        </ul>
+                        {{-- </template> --}}
+                    </li>
+
                 </ul>
-                <div class="px-6 my-6">
+                {{-- <div class="px-6 my-6">
                     <button
                         class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Create account
                         <span class="ml-2" aria-hidden="true">+</span>
                     </button>
-                </div>
+                </div> --}}
             </div>
         </aside>
         <!-- Mobile sidebar -->
@@ -279,20 +411,80 @@
                         </a>
                     </li>
                 </ul>
+
                 <ul>
+                    {{-- Student Section --}}
                     <li class="relative px-6 py-3">
-                        <button
-                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            @click="togglePagesMenu" aria-haspopup="true">
+                        <div
+                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
                             <span class="inline-flex items-center">
-                                <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                    stroke="currentColor">
+                                {{-- <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path
                                         d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
                                     </path>
-                                </svg>
-                                <span class="ml-4">Pages</span>
+                                </svg> --}}
+                                <span class="ml-2">Admission</span>
+                            </span>
+                        </div>
+
+                        <!-- Submenu always shown -->
+                        <ul class="p-2 mt-2 space-y-2 text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                            aria-label="submenu">
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('quickaddmissions.create') }}">Quick Admission</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('students.create') }}">Admission</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('re-admissions.index') }}"> Readmission</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('students.index') }}">Students</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{-- Employee Section --}}
+                    <li class="relative px-6 py-3">
+                        <div
+                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                            <span class="inline-flex items-center">
+                                {{-- <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                  <path
+                                      d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
+                                  </path>
+                              </svg> --}}
+                                <span class="ml-2">Employees</span>
+                            </span>
+                        </div>
+
+                        <!-- Submenu always shown -->
+                        <ul class="p-2 mt-2 space-y-2 text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                            aria-label="submenu">
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('employees.create') }}">Employee Create</a>
+                            </li>
+                            <li
+                                class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                <a class="w-full" href="{{ route('employees.index') }}">Employee List</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    <li class="relative px-6 py-3">
+                        <button
+                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            @click="toggleRoleMenu" aria-haspopup="true">
+                            <span class="inline-flex items-center">
+                                <span class="ml-4"> Security </span>
                             </span>
                             <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -300,7 +492,7 @@
                                     clip-rule="evenodd"></path>
                             </svg>
                         </button>
-                        <template x-if="isPagesMenuOpen">
+                        <template x-if="isRoleMenuOpen">
                             <ul x-transition:enter="transition-all ease-in-out duration-300"
                                 x-transition:enter-start="opacity-25 max-h-0"
                                 x-transition:enter-end="opacity-100 max-h-xl"
@@ -311,34 +503,119 @@
                                 aria-label="submenu">
                                 <li
                                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="./blank.html">Blank</a>
+                                    <a class="w-full" href="{{ route('users.index') }}">Users</a>
                                 </li>
-                            </ul>
-                        </template>
-                        <template x-if="isPagesMenuOpen">
-                            <ul x-transition:enter="transition-all ease-in-out duration-300"
-                                x-transition:enter-start="opacity-25 max-h-0"
-                                x-transition:enter-end="opacity-100 max-h-xl"
-                                x-transition:leave="transition-all ease-in-out duration-300"
-                                x-transition:leave-start="opacity-100 max-h-xl"
-                                x-transition:leave-end="opacity-0 max-h-0"
-                                class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
-                                aria-label="submenu">
+
                                 <li
                                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                                    <a class="w-full" href="./blank.html">Blank</a>
+                                    <a class="w-full" href="{{ route('roles.index') }}">Roles</a>
+                                </li>
+
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('permissions.index') }}">Permissions</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('roles.permissions') }}">Role Management</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('users.authorizations') }}">Assign Role</a>
                                 </li>
                             </ul>
                         </template>
                     </li>
+
+
+                    <li class="relative px-6 py-3">
+                        <button
+                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                            @click="toggleBranchMenu" aria-haspopup="true">
+                            <span class="inline-flex items-center">
+                                <span class="ml-4">Setups</span>
+                            </span>
+                            <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <template x-if="isBranchMenuOpen">
+                            <ul x-transition:enter="transition-all ease-in-out duration-300"
+                                x-transition:enter-start="opacity-25 max-h-0"
+                                x-transition:enter-end="opacity-100 max-h-xl"
+                                x-transition:leave="transition-all ease-in-out duration-300"
+                                x-transition:leave-start="opacity-100 max-h-xl"
+                                x-transition:leave-end="opacity-0 max-h-0"
+                                class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                                aria-label="submenu">
+
+
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('users.index') }}">Users</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('designations.index') }}">Designations</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('exams.index') }}">Exam Names</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('education_boards.index') }}">Board Names</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('classes.index') }}">Classes</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('groups.index') }}">Groups</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('campuses.index') }}">Campus</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('sections.index') }}">Sections</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('religions.index') }}">Religion</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('blood_groups.index') }}">Blood Group</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('nationalities.index') }}">Nationality</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('occupations.index') }}">Occupation</a>
+                                </li>
+                                <li
+                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                                    <a class="w-full" href="{{ route('districts.index') }}">Districts</a>
+                                </li>
+
+                            </ul>
+                        </template>
+                    </li>
                 </ul>
-                <div class="px-6 my-6">
+                {{-- <div class="px-6 my-6">
                     <button
                         class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Create account
                         <span class="ml-2" aria-hidden="true">+</span>
                     </button>
-                </div>
+                </div> --}}
             </div>
         </aside>
         <div class="flex flex-col flex-1">
@@ -457,8 +734,8 @@
                                 @click="toggleProfileMenu" @keydown.escape="closeProfileMenu" aria-label="Account"
                                 aria-haspopup="true">
                                 <img class="object-cover w-8 h-8 rounded-full"
-                                    src="{{ Auth::user()->image?->url ?? asset('images/blank-profile-pic.png') }}" alt=""
-                                    aria-hidden="true" />
+                                    src="{{ Auth::user()->image?->url ?? asset('images/blank-profile-pic.png') }}"
+                                    alt="" aria-hidden="true" />
                             </button>
                             <template x-if="isProfileMenuOpen">
                                 <ul x-transition:leave="transition ease-in duration-150"
@@ -523,7 +800,7 @@
                     </ul>
                 </div>
             </header>
-            <main class="h-full pb-16 overflow-y-auto">
+            <main class="h-full pb-16">
                 <!-- Remove everything INSIDE this div to a really blank page -->
                 {{ $slot }}
             </main>

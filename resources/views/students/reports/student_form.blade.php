@@ -70,9 +70,9 @@
                             </td>
                             <td>
                                 <h1>{{ $student->name }}</h1>
-                                <p>ID: {{ $student->id_number }} | Roll: {{ $student->roll }}</p>
-                                <p>Class: {{ $student->studentClass->name ?? '-' }} | Section: {{ $student->section->name ?? '-' }}</p>
-                                <p>Campus: {{ $student->campus->name ?? '-' }}</p>
+                                <p>ID: {{ $student->id_number }} | Roll: {{ $student->currentClass?->roll }} | Version: {{ $student->version }}</p>
+                                <p>Class: {{ $student->currentClass?->SchoolClass->name ?? '-' }} | Section: {{ $student->currentClass?->section?->name ?? '-' }}</p>
+                                <p>Campus: {{ $student->currentClass?->campus?->name ?? '-' }}</p>
                                 <p>Date of Birth: {{ optional($student->dob)->format('d M, Y') }}</p>
                             </td>
                         </tr>
@@ -111,11 +111,11 @@
             <td class="bold">Admitted:</td>
             <td>{{ optional($student->admitted_at)->format('d M, Y') }}</td>
             <td class="bold">Academic Year:</td>
-            <td>{{ $student->academic_year }}</td>
+            <td>{{ $student->currentClass?->year }}</td>
         </tr>
         <tr>
             <td class="bold">Group:</td>
-            <td>{{ $student->group->name ?? '-' }}</td>
+            <td>{{ $student->currentClass?->group->name ?? '-' }}</td>
             <td class="bold">Status:</td>
             <td>
                 @if ($student->status === 1)

@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "d868b033-9ac6-45fe-9060-ada8114d839f",
+		"name": "school_management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1539223",
+		"_collection_link": "https://galactic-space-821381.postman.co/workspace/Alor-Feri-Workspace~960a4ffe-21c8-4b58-8e58-bf076fd074f8/collection/1539223-d868b033-9ac6-45fe-9060-ada8114d839f?action=share&source=collection_link&creator=1539223"
+	},
+	"item": [
+		{
+			"name": "users post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "employees/select2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.0.119:5000/api/employees/select2",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"119"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"employees",
+						"select2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "students/select2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.0.119:5000/api/students/select2",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"119"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"students",
+						"select2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "students.show",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.0.116:5000/api/students/1254",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"116"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"students",
+						"1254"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "gen-id-number",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.0.119:5000/api/employees/select2",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"119"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"employees",
+						"select2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set session by campus and class",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.0.119:5000/api/sections/select2?class_id&campus_id=2a46f6d2-1fc3-4edd-b741-ec618a45ec32",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"119"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"sections",
+						"select2"
+					],
+					"query": [
+						{
+							"key": "class_id",
+							"value": null
+						},
+						{
+							"key": "campus_id",
+							"value": "2a46f6d2-1fc3-4edd-b741-ec618a45ec32"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

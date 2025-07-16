@@ -24,11 +24,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -66,9 +63,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-    public function image()
+    public function userable()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->morphTo();
     }
 
 }

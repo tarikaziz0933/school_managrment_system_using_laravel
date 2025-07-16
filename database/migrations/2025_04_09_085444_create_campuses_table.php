@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('campuses', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name')->unique();
+            $table->integer('status')->default();
             $table->timestamps();
             $table->softDeletes();
         });

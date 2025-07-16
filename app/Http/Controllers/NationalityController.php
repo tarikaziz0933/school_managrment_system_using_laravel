@@ -13,7 +13,7 @@ class NationalityController extends Controller
     public function index()
     {
         $nationalities = Nationality::paginate();
-        return view('nationalities.index', compact('nationalities'));
+        return view('setups.nationalities.index', compact('nationalities'));
     }
 
     /**
@@ -21,7 +21,7 @@ class NationalityController extends Controller
      */
     public function create()
     {
-        return view('nationalities.create');
+        return view('setups.nationalities.create');
     }
 
     /**
@@ -29,15 +29,25 @@ class NationalityController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
+            'status' => 'required|integer|in:0,1',
         ]);
         Nationality::create([
+            // dd($request->status),
             'name' => $request->name,
+            'status' => $request->status,
         ]);
 
         return redirect()->route('nationalities.index')->with('success', 'Nationality added successfully!');
     }
+
+    // public function softDelete($id)
+    // {
+    //     Nationality::findOrFail($id)->delete();
+    //     return back()->with('success', 'Nationality deleted.');
+    // }
 
     /**
      * Display the specified resource.
@@ -50,9 +60,10 @@ class NationalityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Nationality $nationality)
+    public function edit(string $id)
     {
-        //
+        $nationality = Nationality::findOrFail($id);
+        return view('setups.nationalities.edit', compact('nationality'));
     }
 
     /**
@@ -60,7 +71,17 @@ class NationalityController extends Controller
      */
     public function update(Request $request, Nationality $nationality)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|integer|in:0,1',
+        ]);
+
+        $nationality->update([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('nationalities.index')->with('success', 'Nationality updated successfully!');
     }
 
     /**

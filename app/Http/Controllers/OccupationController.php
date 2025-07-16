@@ -13,7 +13,7 @@ class OccupationController extends Controller
     public function index()
     {
         $occupations = Occupation::paginate();
-        return view('occupations.index', compact('occupations'));
+        return view('setups.occupations.index', compact('occupations'));
     }
 
     /**
@@ -21,7 +21,7 @@ class OccupationController extends Controller
      */
     public function create()
     {
-        return view('occupations.create');
+        return view('setups.occupations.create');
     }
 
     /**
@@ -30,14 +30,22 @@ class OccupationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:occupations,name',
+            'status' => 'required|integer|in:0,1',
         ]);
         Occupation::create([
             'name' => $request->name,
+            'status' => $request->status,
         ]);
 
         return redirect()->route('occupations.index')->with('success', 'Occupation added successfully!');
     }
+
+    // public function softDelete($id)
+    // {
+    //     Occupation::findOrFail($id)->delete();
+    //     return back()->with('success', 'Group Name deleted.');
+    // }
 
     /**
      * Display the specified resource.
@@ -50,17 +58,30 @@ class OccupationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Occupation $occupation)
+    public function edit($id)
     {
-        //
+        $occupation = Occupation::findOrFail($id);
+        return view('setups.occupations.edit', compact('occupation'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Occupation $occupation)
+    public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:occupations,name',
+            'status' => 'required|integer|in:0,1',
+        ]);
+
+        $occupation = Occupation::findOrFail($id);
+
+        $occupation->update([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('occupations.index')->with('success', 'Occupation updated successfully!');
     }
 
     /**

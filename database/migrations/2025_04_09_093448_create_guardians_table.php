@@ -13,15 +13,26 @@ return new class extends Migration
     {
         Schema::create('guardians', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('mobile');
-            $table->string('email')->nullable();
 
-            $table->uuid('occupation_id');
+            $table->string('name');
+            $table->string('name_bn')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('email')->nullable();
+            $table->string('dob')->nullable();
+            $table->string('nid')->nullable();
+
+            $table->boolean('is_primary_guardian')->default(false);
+
+            $table->string('relation_type_slug')->nullable();
+
+            $table->uuid('occupation_id')->nullable();
             $table->foreign('occupation_id')->references('id')->on('occupations');
 
-            $table->uuid('student_id')->index(); // Changed to match UUID
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->uuid('guardianable_id');
+            $table->string('guardianable_type');
+
+
+            $table->unique(['guardianable_id', 'relation_type_slug']);
 
             $table->timestamps();
             $table->softDeletes();

@@ -11,7 +11,7 @@ class Role extends RoleModel
     use HasFactory;
     use AutoUuid;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'display_name', 'description'];
 
     public function users()
     {

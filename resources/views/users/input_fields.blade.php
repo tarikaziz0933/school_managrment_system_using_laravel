@@ -1,24 +1,33 @@
-{{-- Profile Image --}}
+
+{{-- Nick Name --}}
+
+
+{{-- Employee --}}
+<div class="">
+    <label for="employee_id" class="block text-sm font-medium text-gray-700 mb-2">Select Employee</label>
+    <select id="employee_id" name="employee_id"
+        class="w-full h-16 sm:h-12 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        {{ $user?->userable ? 'disabled' : '' }}>
+        <option value="{{ $user?->userable?->id }}">
+            {{ $user?->userable?->name }}
+        </option>
+    </select>
+</div>
+
+{{-- Username --}}
 <div>
-    <label class="block text-sm font-medium text-gray-700">Profile Image</label>
-
-    <div class="mb-3">
-        <img id="pic1" class="w-48 h-48 object-cover rounded-lg border"
-                src="{{ $user?->image?->url ?? asset('images/blank-profile-pic.png') }}"
-                 />
-    </div>
-
-    <input type="file" name="image" oninput="updateImage(this, 'pic1')"
-        class="mt-1 block w-full text-sm border border-gray-300 rounded-md shadow-sm file:bg-blue-600 file:text-white file:rounded file:px-4 file:py-2 file:border-0">
-    @error('image')
+    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+    <input type="text" id="username" name="username" value="{{ old('username', $user?->username) }}"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" required
+        {{ $user?->userable ? 'disabled' : '' }}>
+    @error('username')
         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
     @enderror
 </div>
 
 
-{{-- Name --}}
 <div>
-    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+    <label for="name" class="block text-sm font-medium text-gray-700">Nick Name</label>
     <input type="text" id="name" name="name" value="{{ old('name', $user?->name) }}"
         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" required>
     @error('name')
@@ -26,15 +35,9 @@
     @enderror
 </div>
 
-{{-- Email --}}
-<div>
-    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-    <input type="email" id="email" name="email" value="{{ old('email', $user?->email) }}"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" required>
-    @error('email')
-        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-    @enderror
-</div>
+
+
+
 
 {{-- Password (optional) --}}
 <div>
@@ -75,10 +78,84 @@
     @enderror
 
     <script>
-        function updateImage(input, picId) {
-            const pic = document.getElementById(picId);
-            pic.src = window.URL.createObjectURL(input.files[0]);
-        }
+        $(document).ready(function() {
+            $('#roles').select2({
+                placeholder: "Select roles",
+                allowClear: true
+            });
+        });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#employee_id').select2({
+                placeholder: 'Search for an employee...',
+                ajax: {
+                    url: '/api/employees/select2',
+                    dataType: 'json',
+                    delay: 250, // wait 250ms after typing before request
+                    processResults: function(data) {
+                        return {
+                            results: data.data.map(function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.name,
+                                    photo_url: item.photo_url
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                templateResult: formatEmployeeResult,
+                templateSelection: formatEmployeeSelection,
+                minimumInputLength: 1, // Start searching after 1 character
+                escapeMarkup: function(markup) {
+                    return markup;
+                } // Allow HTML
+            });
+
+            function formatEmployeeResult(employee) {
+                if (!employee.id) {
+                    return employee.text;
+                }
+                var photoUrl = employee.photo_url || '/default-photo.png';
+                var markup = `
+                <div class="flex items-center">
+                    <img src="${photoUrl}" class="w-6 h-6 rounded-full mr-2" />
+                    <span>${employee.text}</span>
+                </div>
+            `;
+                return markup;
+            }
+
+            function formatEmployeeSelection(employee) {
+                return employee.text || employee.id;
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#employee_id').on('change', function() {
+                // Get the selected option text
+                let employeeName = $(this).find('option:selected').text();
+
+                // Convert to lowercase
+                let username = employeeName.toLowerCase()
+                    // Replace . and space and other special chars with underscore
+                    .replace(/[^a-z0-9]/g, '_')
+                    // Replace multiple underscores with single underscore
+                    .replace(/_+/g, '_')
+                    // Remove leading or trailing underscores
+                    .replace(/^_+|_+$/g, '');
+
+                // Set it to the username input
+                $('#username').val(username);
+            });
+        });
+    </script>
+
 
 </div>

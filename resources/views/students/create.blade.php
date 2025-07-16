@@ -1,44 +1,53 @@
 <x-app-layout>
-    <div class="container-fluid">
-        <div class="card p-6">
-            <div class="mb-6">
-                <h3 class="text-2xl font-bold">Student Admission</h3>
-            </div>
+    <x-page-layout :title="'Student: Create'">
 
-            @if (session('success'))
-                <div class="alert alert-success text-lg">{{ session('success') }}</div>
-            @endif
+        <x-slot name="actions">
+            <a href="{{ route('students.index') }}" class="">
+                ← Back to Students
+            </a>
+        </x-slot>
 
-            @if ($errors->any())
-                <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                    <strong>Whoops! Something went wrong.</strong>
-                    <ul class="mt-2 list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        <div class="container-fluid">
+            <div class="card p-6">
+                {{-- <div class="mb-6">
+                    <h3 class="text-2xl font-bold">Student Create</h3>
+                </div> --}}
 
+                @if (session('success'))
+                    <div class="alert alert-success text-lg">{{ session('success') }}</div>
+                @endif
 
-            <div class="card-body">
-
-                <form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-
-                    @include('students.input_fields', ['student' => null])
-
-                    <!-- Submit Button -->
-                    <div class="mt-6">
-                        <button type="submit"
-                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md transition">
-                            Submit
-                        </button>
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                        <strong>Whoops! Something went wrong.</strong>
+                        <ul class="mt-2 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
-                </form>
+                @endif
+
+
+                <div class="card-body">
+
+                    <form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        @include('students.input_fields', ['student' => null])
+
+                        {{-- Buttons --}}
+                        <div class="mt-6 flex flex justify-end space-x-4 gap-4 mr-6">
+                            <button type="submit"
+                                class="w-24 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-md transition duration-200">
+                                Save
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-
+    </x-page-layout>
 
 </x-app-layout>

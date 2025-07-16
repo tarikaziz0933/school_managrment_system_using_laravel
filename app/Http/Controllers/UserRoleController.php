@@ -20,7 +20,7 @@ class UserRoleController extends Controller
 
         $roles = Role::all();
         $permissions = Permission::all();
-        
+
         // Example of passing the first user (or any logic to select a user)
         $user = $users->first();  // or use Auth::user() if you want the currently logged-in user
 

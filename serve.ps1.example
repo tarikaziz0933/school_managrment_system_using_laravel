@@ -1,0 +1,1 @@
+php artisan serve --host YOUR_IP_ADDRESS --port YOUR_PORT

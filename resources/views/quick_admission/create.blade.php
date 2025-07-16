@@ -1,269 +1,317 @@
 <x-app-layout>
-    <div class="container-fluid">
-        <div class="card p-6">
-            <div class="mb-6">
-                <h3 class="text-2xl font-bold">Student Admission</h3>
-            </div>
 
-            @if (session('success'))
-                <div class="alert alert-success text-lg">{{ session('success') }}</div>
-            @endif
+    <x-page-layout :title="'Student: Quick Create'">
 
-            @if ($errors->any())
-                <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                    <strong>Whoops! Something went wrong.</strong>
-                    <ul class="mt-2 list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        <x-slot name="actions">
+            <a href="{{ route('students.index') }}" class="">
+                ← Back to list
+            </a>
+        </x-slot>
 
-            <div class="card-body">
-                <form action="{{ route('quickaddmission.store') }}" method="POST" enctype="multipart/form-data">
+        <div class=" mx-auto p-6">
+            <div class=" rounded-xl p-8">
+                <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b pb-4">Quick Admission</h2>
+
+                @if (session('success'))
+                    <div class="bg-green-100 text-green-800 px-4 py-3 rounded mb-4 text-lg">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 px-4 py-3 rounded mb-4">
+                        <strong class="block">Whoops! Something went wrong.</strong>
+                        <ul class="mt-2 list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('quickaddmissions.store') }}" method="POST" enctype="multipart/form-data"
+                    class="space-y-6">
                     @csrf
 
-                    <div class="">
-                        <!-- Separate single column beside the group -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                        <!-- Grid layout with 3 columns -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
-                            <!-- Admission Date -->
-                            <div>
-                                <label class="block text-sm font-medium">Admission Date</label>
-                                <input type="date" name="admitted_at" id="admitted_at" class="w-64 border p-2 rounded"
-                                    value="{{ \Carbon\Carbon::now()->toDateString() }}">
-                                
-                                @error('admitted_at')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
+                        <!-- Admission Date -->
+                        <x-form.input type="date" name="admitted_at" label="Admission Date"
+                            value="{{ \Carbon\Carbon::now()->toDateString() }}" />
+
+
+
+                        <!-- Academic Year -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Academic Year</label>
+                            <select name="year" id="year"
+                                class="w-full h-12 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                @for ($year = date('Y') - 1; $year <= date('Y') + 1; $year++)
+                                    <option value="{{ $year }}"
+                                        {{ (old('year') ?? date('Y')) == $year ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('year')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- ID Number -->
+                        <x-form.input type="number" name="id_number" label="ID No" placeholder="Type Serial No"
+                            readonly value="{{ old('id_number', $nextStudentId) }}" />
+
+                        <!-- Student Name -->
+                        <x-form.input type="text" name="name" label="Student's Name <span class='text-red-500'>*</span>"
+                            placeholder="Type Student's Name" />
+
+
+                        <!-- Version -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Version</label>
+                            <div class="flex items-center space-x-6">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="version" value="bangla"
+                                        {{ old('version', 'bangla') == 'bangla' ? 'checked' : '' }}
+                                        class="text-blue-500 focus:ring-blue-500 border-gray-300">
+                                    <span class="ml-2 text-sm text-gray-700">Bangla</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="version" value="english"
+                                        {{ old('version') == 'english' ? 'checked' : '' }}
+                                        class="text-blue-500 focus:ring-blue-500 border-gray-300">
+                                    <span class="ml-2 text-sm text-gray-700">English</span>
+                                </label>
                             </div>
-                            <!-- Form Number -->
-                            <div>
-                                <label for="registration_number" class="block text-lg font-medium text-gray-700">Form No</label>
-                                <input
-                                    type="text"
-                                    name="registration_number"
-                                    id="registration_number"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2"
-                                    placeholder="{{ count($students) + 1 }}"
-                                    value="{{ count($students) + 1 }}"
-                                    readonly
-                                >
-                                @error('registration_number')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
+                            @error('version')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+
+                        {{-- Father's Name --}}
+                        <x-form.input type="text" name="father_name" label="Father's Name <span class='text-red-500'>*</span>"
+                            placeholder="Type Father's Name" />
+
+
+                        <!-- Roll -->
+                        <div class="flex items-center space-x-6">
+                            <div class="flex-1">
+                                <x-form.input type="number" name="roll" label="Roll"
+                                    placeholder="Type Roll No." />
                             </div>
-
-                            <!-- Campus -->
-                            <div>
-                                <label for="campus_id" class="block text-lg font-medium text-gray-700">Campus</label>
-                                <select
-                                    name="campus_id"
-                                    id="campus_id"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2">
-                                    @foreach ($campuses as $campus)
-                                        <option value="{{ $campus->id }}" {{ old('campus_id') == $campus->id ? 'selected' : '' }}>{{ $campus->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('campus_id')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <!-- Class -->
-                            <div>
-                                <label for="branch" class="block text-lg font-medium text-gray-700">Class</label>
-                                <select name="class_id" id="class_id"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2">
-                                    @foreach ($classes as $class)
-                                        <option value="{{ $class->id }} {{ old('class_id') == $class->id ? 'selected' : '' }}">{{ $class->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('class_id')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Group -->
-                            <div>
-                                <label for="group" class="block text-lg font-medium text-gray-700">Group</label>
-                                <select name="group_id" id="group_id"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2">
-                                    @foreach ($groups as $group)
-                                        <option value="{{ $group->id }}" {{ old('group_id') == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('group_id')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Section -->
-                            <div>
-                                <label for="section" class="block text-lg font-medium text-gray-700">Section</label>
-                                <select name="section_id" id="section_id"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2">
-                                    @foreach ($sections as $section)
-                                        <option value="{{ $section->id }}" {{ old('section_id') == $section->id ? 'selected' : '' }}>{{ $section->name }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('section_id')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Year -->
-                            <div>
-                                <label class="block text-sm font-medium">Academic Year</label>
-                                <select name="academic_year" id="academic_year" class="w-64 border p-2 rounded">
-                                    @for ($year = 2025; $year <= 2035; $year++)
-                                        <option value="{{ $year }}" {{ old('academic_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                                    @endfor
-                                </select>
-
-                                @error('academic_year')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Serial No -->
-                            <div>
-                                <label for="id_number" class="block text-lg font-medium text-gray-700">ID No</label>
-                                <input type="number" name="id_number" placeholder="Serial No"  value="{{ old('id_number') }}"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2" />
-
-                                @error('id_number')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Student Name -->
-                            <div class="">
-                                <label for="student_name" class="block text-lg font-medium text-gray-700">Student
-                                    Name</label>
-                                <input type="text" name="name" placeholder="Student Name" value="{{ old('name') }}"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2" />
-
-                                @error('name')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Roll -->
-                            <div>
-                                <label class="block text-sm font-medium">Roll</label>
-                                <select name="roll" id="roll" class="w-64 border p-2 rounded">
-                                    @for ($roll = 1; $roll <= 50; $roll++)
-                                        <option value="{{ $roll }}" {{ old('roll') == $roll ? 'selected' : '' }}>{{ $roll }}</option>
-                                    @endfor
-                                </select>
-
-                                @error('roll')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Sex -->
-                            <div>
-                                <label class="block text-sm font-medium">Sex</label>
-                                <select name="gender" id="gender" class="w-64 border p-2 rounded">
-                                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                                    <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
-                                </select>
-                            
-                                @error('gender')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Status and Admission Test Marks -->
 
                             <div class="flex-1">
-                                <label class="block font-semibold mb-2">Status:</label>
-                                <select name="status" id="status" class="w-64 px-4 py-2 border p-2 rounded">
-                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
-                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                <label for="roll_postfix"
+                                    class="block text-sm font-medium text-gray-700">Postfix</label>
+                                <select name="roll_postfix" id="roll_postfix"
+                                    class="w-full h-12 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="" selected>Select</option>
+                                    @foreach (range('A', 'Z') as $letter)
+                                        <option value="{{ $letter }}"
+                                            {{ old('roll_postfix') == $letter ? 'selected' : '' }}>
+                                            {{ $letter }}
+                                        </option>
+                                    @endforeach
                                 </select>
-                            
-                                @error('status')
-                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Phone No -->
-                            <div>
-                                <label for="phone_no" class="block text-lg font-medium text-gray-700">Phone
-                                    Number</label>
-                                <input type="text" name="mobile" id="mobile" placeholder="Phone No" value="{{ old('mobile') }}"
-                                    class="mt-1 w-64 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 px-3 py-2" />
-
-                                @error('mobile')
+                                @error('roll_postfix')
                                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
-                        <!-- Submit Button -->
-                        <div class="mt-6">
-                            <button type="submit"
-                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md transition">
-                                Submit
-                            </button>
+
+
+
+                        <!-- Campus -->
+                        <x-form.select name="campus_id" label="Campus <span class='text-red-500'>*</span>" :options="$campuses" optionValue="id"
+                            optionLabel="name" />
+
+
+
+                        {{-- Class --}}
+                        <x-form.select3 name="class_id" label="Class <span class='text-red-500'>*</span>" :options="$classes
+                            ->map(fn($class) => ['id' => $class->id, 'name' => $class->name, 'level' => $class->level])
+                            ->values()" optionValue="id"
+                            optionLabel="name" id="class_id" />
+
+
+                        <!-- Section -->
+                        <x-form.select name="section_id" label="Section <span class='text-red-500'>*</span>" :options="[]" optionValue="id"
+                            optionLabel="name" />
+
+
+                        {{-- Group --}}
+                        <x-form.select name="group_id" label="Group" :options="$groups->map(fn($name, $id) => ['id' => $id, 'name' => $name])->values()" optionValue="id"
+                            optionLabel="name" id="group_id" />
+
+                        {{-- Date of Birth --}}
+                        <div class="">
+                            <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth <span class='text-red-500'>*</span></label>
+                            <input type="date" name="dob" id="dob" value="{{ old('dob') }}"
+                                class="w-full h-12 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                            <div id="ageResult" class="text-sm text-blue-600 font-medium"></div>
+                            @error('dob')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                            {{-- <div id="ageResult" class="mt-4  text-lg text-gray-800 font-semibold"></div> --}}
                         </div>
+
+                        <!-- Gender -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Gender <span class='text-red-500'>*</span></label>
+                            @php
+                                $genders = [
+                                    'male' => 'Male',
+                                    'female' => 'Female',
+                                    'other' => 'Other',
+                                ];
+                            @endphp
+                            <select name="gender" id="gender"
+                                class="w-full h-12 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">[Select]</option>
+                                @foreach ($genders as $key => $value)
+                                    <option value="{{ $key }}"
+                                        {{ old('gender') == $key ? 'selected' : '' }}>
+                                        {{ $value }}</option>
+                                @endforeach
+                            </select>
+                            @error('gender')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Mobile -->
+                        <x-form.input type="tel" name="mobile" label="Phone Number <span class='text-red-500'>*</span>"
+                            placeholder="Type Phone No." />
+
+                        <!-- SMS Number -->
+                        <x-form.input type="tel" name="sms_number" label="SMS/WhatsApp Number <span class='text-red-500'>*</span>"
+                            placeholder="Type SMS No." />
+
+                        <!-- Status -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Status</label>
+                            <select name="status" id="status"
+                                class="w-full h-12 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                                <option value="1" {{ old('status') == '1' ? 'selected' : '' }} selected>Active
+                                </option>
+                            </select>
+                            @error('status')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+
+
+                    </div>
+
+
+                    {{-- Buttons --}}
+                    <div class="mt-6 flex flex justify-end space-x-4 gap-4 mr-6">
+                        <button type="submit"
+                            class="w-24 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-md transition duration-200">
+                            Save
+                        </button>
+
                     </div>
                 </form>
             </div>
         </div>
-    </div>
 
-    <script>
-        $(document).ready(function() {
-            $('#campus_id').select2({
-                placeholder: "Select a campus",
-                allowClear: true
+        <!-- Select2 Scripts -->
+        <script>
+            $(document).ready(function() {
+                $('#campus_id, #group_id, #section_id').select2({
+                    placeholder: "[Select]",
+                    allowClear: true,
+                    width: '100%'
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#class_id').select2({
-                placeholder: "Select a class",
-                allowClear: true
-            });
-        });
-    </script>
+        {{-- Group activation script --}}
+        <script>
+            $(document).ready(function() {
+                function toggleGroupSelect() {
+                    const selectedClass = $('#class_id').find(':selected');
+                    const level = parseInt(selectedClass.data('level'));
 
-    <script>
-        $(document).ready(function() {
-            $('#group_id').select2({
-                placeholder: "Select a group",
-                allowClear: true
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#section_id').select2({
-                placeholder: "Select a section",
-                allowClear: true
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#class_id').select2({
-                placeholder: "Select a class",
-                allowClear: true
-            });
-        });
-    </script>
+                    console.log('Selected Level:', level);
 
+                    if (!isNaN(level) && level >= 9) {
+                        $('#group_id').prop('disabled', false);
+                    } else {
+                        $('#group_id')
+                            .val('') // Clear value
+                            .trigger('change') // Update UI (Select2 or native)
+                            .prop('disabled', true);
+                    }
+                }
+
+                // Initialize Select2 if not already done
+                $('#class_id, #group_id').select2();
+
+                toggleGroupSelect(); // Run on page load
+
+                $('#class_id').on('change', toggleGroupSelect);
+            });
+        </script>
+
+        {{-- For DOB --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dobInput = document.getElementById('dob');
+                const ageResult = document.getElementById('ageResult');
+
+                function calculateAge(dobStr) {
+                    if (!dobStr) {
+                        ageResult.textContent = '';
+                        return;
+                    }
+
+                    const dob = new Date(dobStr);
+                    const today = new Date();
+
+                    let years = today.getFullYear() - dob.getFullYear();
+                    let months = today.getMonth() - dob.getMonth();
+                    let days = today.getDate() - dob.getDate();
+
+                    if (days < 0) {
+                        months -= 1;
+                        const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                        days += previousMonth.getDate();
+                    }
+
+                    if (months < 0) {
+                        years -= 1;
+                        months += 12;
+                    }
+
+                    ageResult.textContent = `Age: ${years} year's, ${months} month's, ${days} day's`;
+                }
+
+                dobInput.addEventListener('change', function() {
+                    calculateAge(this.value);
+                });
+
+                // Trigger on page load if value is already set
+                if (dobInput.value) {
+                    calculateAge(dobInput.value);
+                }
+            });
+        </script>
+
+
+        <script src="{{ asset('js/section_select_by_campus_and_class.js') }}"></script>
+
+        <script>
+            // Initialize
+            setupSectionSelect('#campus_id', '#class_id', '#section_id');
+        </script>
+
+        </x-page-show-layout>
 
 </x-app-layout>

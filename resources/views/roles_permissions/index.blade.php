@@ -108,7 +108,7 @@
               @endforeach
               </div>
             </td>
-            <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-sm">
+            {{-- <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-sm">
               <form action="{{ route('roles.destroy', ['id' => $role->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this role?');">
                 @csrf
                 @method('DELETE')
@@ -116,7 +116,7 @@
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </form>
-            </td>
+            </td> --}}
           </tr>
           @endforeach
         </tbody>

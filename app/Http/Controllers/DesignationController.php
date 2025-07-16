@@ -13,7 +13,7 @@ class DesignationController extends Controller
     public function index()
     {
         $designations = Designation::paginate();
-        return view('designations.index', compact('designations'));
+        return view('setups.designations.index', compact('designations'));
     }
 
     /**
@@ -22,7 +22,7 @@ class DesignationController extends Controller
     public function create()
     {
         $designations = Designation::paginate();
-        return view('designations.create', compact('designations'));
+        return view('setups.designations.create', compact('designations'));
     }
 
     /**
@@ -33,15 +33,30 @@ class DesignationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'required|integer|in:0,1',
-    ]);
+        ]);
 
-    Designation::create([
-        'name' => $request->name,
-        'status' => $request->status,
-    ]);
+        Designation::create([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
 
-    return redirect()->route('designations.index')->with('success', 'Class added successfully!');
+        return redirect()->route('designations.index')->with('success', 'Class added successfully!');
     }
+
+    // public function toggleStatus($id)
+    // {
+    //     $designation = Designation::findOrFail($id);
+    //     $designation->status = !$designation->status;
+    //     $designation->save();
+
+    //     return redirect()->back();
+    // }
+
+    // public function softDelete($id)
+    // {
+    //     Designation::findOrFail($id)->delete();
+    //     return back()->with('success', 'Designation deleted.');
+    // }
 
     /**
      * Display the specified resource.
@@ -56,7 +71,8 @@ class DesignationController extends Controller
      */
     public function edit(Designation $designation)
     {
-        //
+        $designations = Designation::paginate();
+        return view('setups.designations.edit', compact('designation', 'designations'));
     }
 
     /**
@@ -64,7 +80,17 @@ class DesignationController extends Controller
      */
     public function update(Request $request, Designation $designation)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|integer|in:0,1',
+        ]);
+
+        $designation->update([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('designations.index')->with('success', 'Designation updated successfully!');
     }
 
     /**

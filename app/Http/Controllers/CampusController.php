@@ -13,7 +13,7 @@ class CampusController extends Controller
     public function index()
     {
         $campuses = Campus::paginate();
-        return view('campuses.index', compact('campuses'));
+        return view('setups.campuses.index', compact('campuses'));
     }
 
     /**
@@ -21,7 +21,8 @@ class CampusController extends Controller
      */
     public function create()
     {
-        return view('campuses.create');
+        $campuses = Campus::paginate();
+        return view('setups.campuses.create', compact('campuses'));
     }
 
     /**
@@ -29,15 +30,33 @@ class CampusController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
+            'status' => 'required|integer|in:0,1',
         ]);
         Campus::create([
             'name' => $request->name,
+            'status' => $request->status ? 1 : 0,
         ]);
 
         return redirect()->route('campuses.index')->with('success', 'Campus added successfully!');
     }
+
+    // public function toggleStatus($id)
+    // {
+    //     $campus = Campus::findOrFail($id);
+    //     $campus->status = !$campus->status;
+    //     $campus->save();
+
+    //     return redirect()->back();
+    // }
+
+    // public function softDelete($id)
+    // {
+    //     Campus::findOrFail($id)->delete();
+    //     return back()->with('success', 'Group Name deleted.');
+    // }
 
     /**
      * Display the specified resource.
@@ -50,17 +69,28 @@ class CampusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Campus $campus)
+    public function edit(string $id)
     {
-        //
+        $campus = Campus::findOrFail($id);
+        return view('setups.campuses.edit', compact('campus'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Campus $campus)
+    public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|integer|in:0,1',
+        ]);
+        $campuses = Campus::findOrFail($id);
+        $campuses->update([
+            'name' => $request->name,
+            'status' => $request->status ? 1 : 0,
+        ]);
+
+        return redirect()->route('campuses.index')->with('success', 'Campus added successfully!');
     }
 
     /**

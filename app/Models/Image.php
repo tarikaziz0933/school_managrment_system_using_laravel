@@ -55,7 +55,7 @@ class Image extends Model
         $createParams =  [
             'imageable_id' => $imageable_object == null ? null : $imageable_object->id,
             'imageable_type' => $imageable_object == null ? null : get_class($imageable_object)
-        ];
+           ];
 
         $image = Image::create($createParams);
 
@@ -91,13 +91,14 @@ class Image extends Model
     public static function createOrUpdateX($imageFile, $size, $imageable_object = null)
     {
 
-        if ($imageable_object->image) {
+        if($imageable_object->image) {
             $imageable_object->image->updateX($imageFile, $size);
         } else {
             $imageable_object->image = Image::createX($imageFile, $size, $imageable_object);
         }
 
         return  $imageable_object->image;
+
     }
 
 
@@ -117,5 +118,7 @@ class Image extends Model
 
         $path = Image::ImagePath();
         $imageFile->move($path, $image_name);
+
     }
+
 }

@@ -18,14 +18,15 @@ class GuardianFactory extends Factory
     {
         return [
             'name'              => fake()->name(),
-            'relation_slug'          => fake()->randomElement(['father', 'mother']),
+            'relation_type_slug'          => fake()->randomElement(['father', 'mother']),
             'occupation_id'        => \Illuminate\Support\Facades\DB::table('occupations')
                 ->inRandomOrder()
                 ->value('id'),
             'mobile'            => fake()->phoneNumber(),
-            'student_id'         => \Illuminate\Support\Facades\DB::table('students')
+            'guardianable_id'         => \Illuminate\Support\Facades\DB::table('students')
                 ->inRandomOrder()
                 ->value('id'),
+            'guardianable_type'       => 'App\Models\Student',
         ];
     }
 }

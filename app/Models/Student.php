@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Traits\AutoUuid;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Model
@@ -12,31 +14,13 @@ class Student extends Model
     use HasFactory;
     use SoftDeletes;
     use AutoUuid;
-    protected $guarded = ['id'];
-
+    protected $guarded = [];
 
     protected $casts = [
         'dob' => 'datetime',
         'admitted_at' => 'datetime',
     ];
 
-
-    public function campus()
-    {
-        return $this->belongsTo(Campus::class, 'campus_id');
-    }
-    public function studentClass()
-    {
-        return $this->belongsTo(StudentClass::class, 'class_id');
-    }
-    public function group()
-    {
-        return $this->belongsTo(Group::class, 'group_id');
-    }
-    public function section()
-    {
-        return $this->belongsTo(Section::class, 'section_id');
-    }
     public function religion()
     {
         return $this->belongsTo(Religion::class, 'religion_id');
@@ -59,15 +43,29 @@ class Student extends Model
         return $this->morphOne(Image::class, 'imageable');
     }
 
-
-    public function father()
+    public function father(): MorphOne
     {
-        return $this->hasOne(Guardian::class)->where('relation_slug', Relation::FATHER);
+        return $this->morphOne(Guardian::class, 'guardianable')->where('relation_type_slug', RelationType::FATHER);
     }
 
-    public function mother()
+    public function mother(): MorphOne
     {
-        return $this->hasOne(Guardian::class)->where('relation_slug', Relation::MOTHER);
+        return $this->morphOne(Guardian::class, 'guardianable')->where('relation_type_slug', RelationType::MOTHER);
+    }
+
+    public function guardian(): MorphOne
+    {
+        return $this->morphOne(Guardian::class, 'guardianable')->whereNotIn('relation_type_slug', [RelationType::FATHER, RelationType::MOTHER]);
+    }
+
+    public function presentAddress(): MorphOne
+    {
+        return $this->morphOne(Address::class, 'addressable')->where('address_type_slug', Address::ADDRESS_TYPE_PRESENT);
+    }
+
+    public function permanentAddress(): MorphOne
+    {
+        return $this->morphOne(Address::class, 'addressable')->where('address_type_slug', Address::ADDRESS_TYPE_PERMANENT);
     }
 
     public function characteristics()
@@ -75,4 +73,33 @@ class Student extends Model
         return $this->belongsToMany(Characteristic::class, 'student_characteristics', 'student_id', 'characteristic_id');
     }
 
+    public function studentClasses()
+    {
+        return $this->hasMany(StudentClass::class, 'student_id', 'id');
+    }
+
+    public function currentClass()
+    {
+        return $this->hasOne(StudentClass::class, 'student_id', 'id')->orderBy('year', 'desc');
+    }
+
+    public static function generateStudentId($year = null)
+    {
+        // Get the current year
+        $year = $year ?? Carbon::now()->year;
+
+        // Get the highest 4-digit number used this year
+        $max_id = Student::whereYear('created_at', $year)->selectRaw('MAX(CAST(SUBSTRING(id_number, 5, 4) AS UNSIGNED)) as max_id')->first();
+
+        // Get the next number (incremented), defaulting to 1
+        $next_number = $max_id && $max_id->max_id ? $max_id->max_id + 1 : 1;
+
+        // Return the new 8-digit ID
+        return $year . str_pad($next_number, 4, '0', STR_PAD_LEFT);
+    }
+
+
+    function vouchers(){
+        return $this->morphMany(Voucher::class, 'voucherable');
+    }
 }

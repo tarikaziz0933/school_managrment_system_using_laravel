@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name')->unique();
-            $table->integer('status')->default(0);
+            $table->integer('level')->unique();
+            $table->integer('status')->default();
             $table->timestamps();
             $table->softDeletes();
         });

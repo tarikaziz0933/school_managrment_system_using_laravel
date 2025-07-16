@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BloodGroup extends Model
 {
     use SoftDeletes, HasFactory;
-    protected $fillable = ['name', 'description'];
+    // protected $fillable = ['name', 'description'];
+    protected $guarded = [];
 
 }

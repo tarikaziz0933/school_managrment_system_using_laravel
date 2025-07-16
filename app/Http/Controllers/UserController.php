@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Image;
 use App\Models\Role;
 use App\Models\User;
@@ -16,10 +17,14 @@ class UserController extends Controller
     {
         // Search
         if ($request->has('search')) {
-            $users = User::where('name', 'like', '%' . $request->search . '%')->paginate();
+            $users = User::where('name', 'like', '%' . $request->search . '%')
+            ->orWhereHas("userable",function($query) use($request) {
+                $query->where('employees.name', 'like', '%' . $request->search . '%')->orWhere('email', $request->search);
+            })
+            ->orderBy("created_at", "desc")
+            ->paginate();
             return view('users.index', compact('users'));
         }
-
 
         $users = User::paginate();
         return view('users.index', compact('users'));
@@ -30,7 +35,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name', 'id');
+        $roles = Role::pluck('display_name', 'id');
         return view('users.create', compact('roles'));
     }
 
@@ -39,23 +44,33 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'employee_id' => 'required|exists:employees,id',
         ]);
 
-       $user = User::create([
+        $employee = Employee::find($request->employee_id);
+
+        $data = [
             'name' => $request->name,
-            'email' => $request->email,
+            'username' => $request->username,
             'password' => bcrypt($request->password),
-        ]);
+            'userable_id' => $request->employee_id,
+            "userable_type" => get_class($employee)
+        ];
 
-         // User image
-         if ($request->hasFile('image')) {
-            $photoFile = $request->file('image');
-            Image::createX($photoFile, 512, $user);
-        }
+
+
+       $user = User::create($data);
+
+        $syncData = collect($request->roles)->mapWithKeys(fn($roleId) => [
+            $roleId => ['user_type' => \App\Models\User::class]
+        ])->toArray();
+
+        $user->roles()->sync($syncData);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
@@ -74,7 +89,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::pluck('name', 'id');
+        $roles = Role::pluck('display_name', 'id');
+
+        $user->load("userable");
+
+
         return view('users.edit', compact('user', 'roles'));
     }
 
@@ -86,18 +105,14 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         $user->update([
             'name' => $request->name,
-            'email' => $request->email,
             'password' => $request->password ? bcrypt($request->password) : $user->password,
         ]);
 
-
-        // $user->roles()->sync($request->roles);
 
         $syncData = collect($request->roles)->mapWithKeys(fn($roleId) => [
             $roleId => ['user_type' => \App\Models\User::class]
@@ -105,16 +120,6 @@ class UserController extends Controller
 
         $user->roles()->sync($syncData);
 
-        // User image
-        if ($request->hasFile('image')) {
-            $photoFile = $request->file('image');
-
-            if ($user->image == null) {
-                Image::createX($photoFile, 512, $user);
-            } else {
-                $user->image->updateX($photoFile, 512);
-            }
-        }
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }

@@ -21,3 +21,9 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/dist
+# macOS
+.DS_Store
+
+serve.sh
+serve.ps1

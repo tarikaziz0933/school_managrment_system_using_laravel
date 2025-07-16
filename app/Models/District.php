@@ -12,4 +12,9 @@ class District extends Model
     use SoftDeletes, HasFactory;
     use AutoUuid;
     protected $guarded = ['id'];
+
+    public function policeStations()
+    {
+        return $this->hasMany(PoliceStation::class);
+    }
 }

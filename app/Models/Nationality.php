@@ -11,5 +11,5 @@ class Nationality extends Model
 {
     use AutoUuid;
     use SoftDeletes, HasFactory;
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'status'];
 }

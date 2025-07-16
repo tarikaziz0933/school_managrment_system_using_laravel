@@ -48,13 +48,16 @@
                                             Verified at:
                                             {{ optional($user->email_verified_at)->format('Y-m-d H:i') ?? 'Not verified' }}
                                         </p>
+                                        <p class="text-xs text-gray-400">
+                                           {{ $user->userable == null ? "User" : "Employee" }}
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div class="mt-4 flex flex-wrap gap-2">
                                     @foreach ($user->roles as $role)
                                         <span
-                                            class="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">{{ $role->name }}</span>
+                                            class="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">{{ $role->display_name }}</span>
                                     @endforeach
                                 </div>
 

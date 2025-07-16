@@ -13,7 +13,13 @@ class Guardian extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
+
+
+    protected $casts = [
+        'dob' => 'date',
+        'is_primary_guardian' => 'boolean',
+    ];
 
     public function image()
     {
@@ -27,12 +33,16 @@ class Guardian extends Model
 
     public function relation()
     {
-        return $this->belongsTo(Relation::class, 'relation_slug', 'slug');
+        return $this->belongsTo(RelationType::class, 'relation_type_slug', 'slug');
     }
 
-    public function student()
+    public function guardianable()
     {
-        return $this->hasMany(Student::class);
+        return $this->morphTo();
     }
+    // public function address()
+    // {
+    //     return $this->morphOne(Address::class, 'addressable');
+    // }
 
 }

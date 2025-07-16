@@ -13,7 +13,7 @@ class BloodGroupController extends Controller
     public function index()
     {
         $bloodGroups = BloodGroup::all();
-        return view('bloodGroups.index', compact('bloodGroups'));
+        return view('setups.bloodGroups.index', compact('bloodGroups'));
     }
 
     /**
@@ -21,7 +21,7 @@ class BloodGroupController extends Controller
      */
     public function create()
     {
-        return view('bloodGroups.create');
+        return view('setups.bloodGroups.create');
     }
 
     /**
@@ -29,7 +29,7 @@ class BloodGroupController extends Controller
      */
     public function store(Request $request)
     {
-        $request ->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
         ]);
@@ -39,6 +39,12 @@ class BloodGroupController extends Controller
         ]);
         return redirect()->route('blood_groups.index')->with('success', 'Blood Group added successfully!');
     }
+
+    // public function softDelete($id)
+    // {
+    //     BloodGroup::findOrFail($id)->delete();
+    //     return back()->with('success', 'Group Name deleted.');
+    // }
 
     /**
      * Display the specified resource.

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,16 +16,20 @@ class UserSeeder extends Seeder
     public function run(): void
     {
 
+
+        foreach (Permission::PERMISSIONS as $key => $value) {
+            Permission::create([
+                'name' => $key,
+                'display_name' => $value,
+            ]);
+        }
+
         Role::create([
             'name' => 'admin',
             'display_name' => 'Admin',
 
         ]);
-        Role::create([
-            'name' => 'user',
-            'display_name' => 'User',
 
-        ]);
         Role::create([
             'name' => 'super-admin',
             'display_name' => 'Super Admin',
@@ -63,6 +68,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Babul Mirdha',
             'email' => 'babul@example.com',
+            'password' => bcrypt('12345678'),
         ]);
     }
 }

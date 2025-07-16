@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Traits\AutoUuid;
@@ -13,13 +12,23 @@ class Section extends Model
     use AutoUuid;
     protected $guarded = ['id'];
 
-    public function studentClass()
+    public function schoolClass()
     {
-        return $this->belongsTo(StudentClass::class, 'class_id');
+        return $this->belongsTo(SchoolClass::class, 'class_id', 'id');
     }
 
-    public function Campus()
+    public function campus()
     {
-        return $this->belongsTo(Campus::class, 'campus_id');
+        return $this->belongsTo(Campus::class, 'campus_id', 'id');
     }
+
+    public function showGenderName()
+    {
+        return ucfirst($this->gender ?? 'Combined');
+    }
+
+    function totalStudents(){
+        return $this->total_boys +  $this->total_girls;
+    }
+
 }

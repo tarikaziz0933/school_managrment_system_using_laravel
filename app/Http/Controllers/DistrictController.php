@@ -13,7 +13,7 @@ class DistrictController extends Controller
     public function index()
     {
         $districts = District::paginate();
-        return view('districts.index', compact('districts'));
+        return view('setups.districts.index', compact('districts'));
     }
 
     /**
@@ -21,7 +21,7 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        return view('districts.create');
+        return view('setups.districts.create');
     }
 
     /**
@@ -38,6 +38,12 @@ class DistrictController extends Controller
 
         return redirect()->route('districts.index')->with('success', 'Occupation added successfully!');
     }
+
+    // public function softDelete($id)
+    // {
+    //     District::findOrFail($id)->delete();
+    //     return back()->with('success', 'District Name deleted.');
+    // }
 
     /**
      * Display the specified resource.

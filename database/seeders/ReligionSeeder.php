@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Relation;
 use App\Models\Religion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;

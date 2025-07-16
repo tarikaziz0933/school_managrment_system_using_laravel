@@ -1,0 +1,194 @@
+<x-app-layout>
+    <div class="mx-auto px-4 py-6">
+        <div class="bg-gray-100 shadow-md rounded-lg overflow-hidden">
+
+            <div class=" p-4 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-semibold text-gray-700">Teacher's List</h3>
+
+                    {{-- Create Button --}}
+                    <a href="{{ route('employees.create') }}"
+                        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+                        Create
+                    </a>
+                </div>
+
+                {{-- Search Form --}}
+                <form method="GET" action="#">
+
+                    <div class="w-full p-4 rounded-lg shadow-md flex flex-wrap sm:flex-nowrap items-end gap-4">
+                        <!-- Search container div (1/3 width) -->
+                        <div class="basis-full sm:basis-1/3 min-w-[200px]">
+                            <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                            <input type="text" name="search" id="search" value="{{ request('search') }}"
+                                placeholder="Search by name or email"
+                                class="w-full h-12 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                        </div>
+
+                        <!-- Dropdowns and submit button container div (2/3 width) -->
+                        <div class="basis-full sm:basis-2/3 flex flex-wrap sm:flex-nowrap gap-4">
+                            <!-- Campus -->
+                            <div class="flex-1 min-w-[100px]">
+                                <label for="campus_id"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Campus</label>
+                                <select name="campus_id" id="campus_id"
+                                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-blue-200">
+                                    <option value="">[Select campus]</option>
+                                    @foreach ($campuses as $id => $name)
+                                        <option value="{{ $id }}"
+                                            {{ request('campus_id') == $id ? 'selected' : '' }}>{{ $name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Type -->
+                            @php
+                                $types = [
+                                    'permanent' => 'Permanent',
+                                    'part_time' => 'Part Time',
+                                    'other' => 'Other',
+                                ];
+                            @endphp
+
+                            <div class="flex-1 min-w-[100px]">
+                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                                <select name="type" id="type"
+                                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-blue-200">
+                                    <option value="">[Select Type]</option>
+                                    @foreach ($types as $id => $name)
+                                        <option value="{{ $id }}"
+                                            {{ request('type') == $id ? 'selected' : '' }}>
+                                            {{ $name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('type_id')
+                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Submit -->
+                            <div class="w-auto">
+                                <label class="block text-sm font-medium text-transparent mb-1">Search</label>
+                                <button type="submit"
+                                    class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                                    </svg>
+                                    <span>Search</span>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="p-4 space-y-6">
+                {{ $employees->links() }}
+
+                @foreach ($employees as $employee)
+                    <div class="flex items-start gap-4 bg-white border rounded-lg shadow p-4">
+                        {{-- Photo (Left Side) --}}
+                        <div class="w-32 h-32 flex-shrink-0">
+                            <img src="{{ $employee?->image?->url ?? asset('images/blank-profile-pic.png') }}"
+                                alt="{{ $employee?->name }}" class="w-full h-full object-cover rounded-lg border">
+                        </div>
+
+                        {{-- Info (Right Side) --}}
+                        <div class="flex-1 space-y-4 text-sm">
+                            {{-- Primary Info --}}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2">
+                                <div><strong>ID:</strong> {{ $employee?->id_number }}</div>
+                                <div><strong>Name:</strong> {{ $employee?->name }}</div>
+
+                                <div><strong>Joined:</strong> {{ $employee?->joind_at->format('d/m/Y') }}</div>
+
+                                <div><strong>Campus:</strong> {{ $employee?->campus?->name }}</div>
+
+                                <div><strong>ID Number:</strong> {{ $employee?->id_number }}</div>
+                                <div><strong>Gender:</strong> {{ ucfirst($employee?->gender) }}</div>
+                                <div><strong>Mobile:</strong> {{ $employee?->mobile }}</div>
+                                <div><strong>Email:</strong> {{ $employee?->email }}</div>
+                                <div><strong>DOB:</strong> {{ $employee?->dob?->format('d/m/Y') }}</div>
+                                <div><strong>Type:</strong> {{ $employee?->type }}</div>
+                                <div><strong>Status:</strong>
+                                    @if ($employee->status === 1)
+                                        <span class="text-green-600 font-semibold">Active</span>
+                                    @else
+                                        <span class="text-red-600 font-semibold">Inactive</span>
+                                    @endif
+                                </div>
+                                {{-- <div><strong>Marks:</strong> {{ $employee->marks }}</div> --}}
+                            </div>
+
+                            {{-- Additional Info --}}
+                            {{-- <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 border-t pt-4">
+                                <div><strong>Religion:</strong> {{ $employee->religion?->name }}</div>
+                                <div><strong>Blood Group:</strong> {{ $employee->bloodGroup?->name }}</div>
+                                <div><strong>Nationality:</strong> {{ $employee->nationality?->name }}</div>
+                                <div><strong>Birth Place:</strong> {{ $employee->district?->name }}</div>
+                                <div><strong>Previous School:</strong> {{ $employee->prev_school }}</div>
+                                <div><strong>Present Address:</strong> {{ $employee->present_address }}</div>
+                                <div><strong>Permanent Address:</strong> {{ $employee->permanent_address }}</div>
+                                <div class="md:col-span-3">
+                                    <strong>Characteristics:</strong>
+                                    @foreach ($employee->characteristics as $char)
+                                        <span
+                                            class="inline-block bg-gray-200 text-gray-700 text-sm px-2 py-1 rounded mr-1 mb-1">
+                                            {{ $char->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                                <div class="col-span-full"><strong>Remarks:</strong> {{ $employee->remarks }}</div>
+                            </div> --}}
+
+                            {{-- Action Buttons --}}
+                            {{-- <div class="pt-3 flex gap-2">
+                                <a href="{{ route('students.show', $employee->id) }}"
+                                    class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">Show</a>
+                                <a href="{{ route('students.edit', $employee->id) }}"
+                                    class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">Edit</a>
+
+
+                                <a href="{{ route('students.report', $employee->id) }}" target="_blank"
+                                    class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 transition">
+                                    PDF
+                                </a>
+
+                            </div> --}}
+                        </div>
+
+                        {{-- Action (right Side) --}}
+                        <div class="flex-shrink-0 flex flex-col space-y-2">
+
+                            <a href="{{ route('employees.show', $employee?->id) }}"
+                                class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">
+                                Show
+                            </a>
+
+                            <a href="{{ route('employees.edit', $employee?->id) }}"
+                                class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">
+                                Edit
+                            </a>
+
+                            {{-- <a href="{{ route('employees.edit', $employee->id) }}" target="_blank"
+                                class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 transition">
+                                PDF
+                            </a> --}}
+
+                        </div>
+
+                    </div>
+                @endforeach
+
+                {{ $employees->links() }}
+            </div>
+        </div>
+    </div>
+</x-app-layout>
